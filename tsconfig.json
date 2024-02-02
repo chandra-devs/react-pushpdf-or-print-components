@@ -3,7 +3,7 @@
     /* Basic Options */
     "target": "es5",
     "module": "commonjs",
-    "lib": [ "dom", "es2018" ],
+    "lib": [ "dom", "es2018", "dom.iterable", "esnext" ],
     "jsx": "react",
     "sourceMap": true,
     "declaration": true,
@@ -26,5 +26,8 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "pretty": true,
+
+    /* Interop Options */
+    "esModuleInterop": true
   }
 }
