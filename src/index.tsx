@@ -1,13 +1,21 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export interface IProps {
   trigger: JSX.Element;
+  pushTrigger: JSX.Element;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
+  pushPdfTo: {
+    url: string;
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    headers?: Record<string, string>;
+  };
 }
 
-export class PrintComponents extends React.Component<IProps, {}> {
+export class PushPrintComponents extends React.Component<IProps, {}> {
   private rootId: string = 'react-components-print';
   private rootEl: HTMLElement;
 
@@ -18,7 +26,7 @@ export class PrintComponents extends React.Component<IProps, {}> {
   }
 
   public render() {
-    const { children, trigger } = this.props;
+    const { children, trigger, pushTrigger } = this.props;
     const content = (
       <React.Fragment>
         { this.createStyle() }
@@ -29,6 +37,7 @@ export class PrintComponents extends React.Component<IProps, {}> {
     return (
       <React.Fragment>
         { React.cloneElement(trigger, {...trigger.props, onClick: this.handlePrint}) }
+        { React.cloneElement(pushTrigger, {...pushTrigger.props, onClick: this.pushPdfToApi}) }
         { ReactDOM.createPortal(content, this.rootEl) }
       </React.Fragment>
     );
@@ -38,6 +47,26 @@ export class PrintComponents extends React.Component<IProps, {}> {
     document.body.insertAdjacentElement('afterbegin', this.rootEl);
     window.onafterprint = this.onPrintClose;
     window.print();
+  }
+
+  private pushPdfToApi = () => {
+    const { url, method, headers } = this.props.pushPdfTo;
+    html2canvas(this.rootEl).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      // A4 size page of PDF
+      const imgWidth = 210;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      const blob = pdf.output('blob');
+      // Make the API call here
+      fetch(url, {
+        method,
+        headers,
+        body: blob
+      });
+    });
   }
 
   private onPrintClose = () => {
@@ -74,4 +103,4 @@ export class PrintComponents extends React.Component<IProps, {}> {
   )
 }
 
-export default PrintComponents;
+export default PushPrintComponents;

@@ -1,21 +1,22 @@
 {
-  "name": "react-print-components",
-  "description": "Print specific react components in the browser.",
-  "version": "1.0.4",
+  "name": "react-pushpdf-or-print-components",
+  "description": "React components to print or push generated PDFs from your app.",
+  "version": "1.0.0",
   "keywords": [
     "react",
     "component",
     "print",
-    "react-print-components"
+    "push as pdf",
+    "react-pushpdf-or-print-components"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "git@github.com:arthur-souza/react-print-components.git",
-  "homepage": "https://github.com/arthur-souza/react-print-components#readme",
+  "repository": "git@github.com:chandra-devs/react-pushpdf-or-print-components.git",
+  "homepage": "https://github.com/chandra-devs/react-pushpdf-or-print-components/blob/master/README.md",
   "bugs": {
-    "url": "https://github.com/arthur-souza/react-print-components/issues"
+    "url": "https://github.com/chandra-devs/react-pushpdf-or-print-components/issues"
   },
-  "author": "Arthur Souza <arthur@arthursouza.com.br>",
+  "author": "Kishore Chandra <kishorechandra.developer@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^16.4.6",
@@ -23,9 +24,11 @@
     "np": "^3.0.4",
     "prettier": "^1.13.7",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "typescript": "^5.3.3"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
