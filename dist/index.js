@@ -4,7 +4,8 @@ exports.PushPrintComponents = void 0;
 var tslib_1 = require("tslib");
 var React = require("react");
 var ReactDOM = require("react-dom");
-var html2canvas_1 = require("html2canvas");
+var dom_to_image_1 = require("dom-to-image");
+var tslib = require("tslib");
 var jspdf_1 = require("jspdf");
 var PushPrintComponents = /** @class */ (function (_super) {
     tslib_1.__extends(PushPrintComponents, _super);
@@ -18,20 +19,34 @@ var PushPrintComponents = /** @class */ (function (_super) {
         };
         _this.pushPdfToApi = function () {
             var _a = _this.props.pushPdfTo, url = _a.url, method = _a.method, headers = _a.headers;
-            (0, html2canvas_1.default)(_this.rootEl).then(function (canvas) {
-                var imgData = canvas.toDataURL('image/png');
-                var pdf = new jspdf_1.default();
-                // A4 size page of PDF
-                var imgWidth = 210;
-                var imgHeight = canvas.height * imgWidth / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                var blob = pdf.output('blob');
-                // Make the API call here
-                fetch(url, {
-                    method: method,
-                    headers: headers,
-                    body: blob
-                });
+            dom_to_image_1.default.toPng(_this.rootEl)
+                .then(function (dataUrl) {
+                var img = new Image();
+                img.src = dataUrl;
+                img.onload = function () {
+                    var pdf = new jspdf_1.default({
+                        orientation: 'portrait',
+                        unit: 'px',
+                        format: [img.width, img.height]
+                    });
+                    pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+                    pdf.save('document.pdf'); // Optional: save locally
+                    var blob = pdf.output('blob');
+                    var formData = new FormData();
+                    formData.append("file", blob, "document.pdf");
+                    // Perform the API call
+                    fetch(url, {
+                        method: method,
+                        headers: headers,
+                        body: formData,
+                    })
+                        .then(function (response) { return response.json(); })
+                        .then(function (data) { return console.log(data); })
+                        .catch(function (error) { return console.error(error); });
+                };
+            })
+                .catch(function (error) {
+                console.error('Error converting to image:', error);
             });
         };
         _this.onPrintClose = function () {
@@ -56,8 +71,8 @@ var PushPrintComponents = /** @class */ (function (_super) {
             this.createStyle(),
             children));
         return (React.createElement(React.Fragment, null,
-            React.cloneElement(trigger, tslib_1.__assign(tslib_1.__assign({}, trigger.props), { onClick: this.handlePrint })),
-            React.cloneElement(pushTrigger, tslib_1.__assign(tslib_1.__assign({}, pushTrigger.props), { onClick: this.pushPdfToApi })),
+            React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint })),
+            React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi })),
             ReactDOM.createPortal(content, this.rootEl)));
     };
     return PushPrintComponents;

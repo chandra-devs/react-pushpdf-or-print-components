@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import html2canvas from 'html2canvas';
+import domToImage from 'dom-to-image';
+import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
 
 export interface IProps {
@@ -26,6 +27,7 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
   }
 
   public render() {
+
     const { children, trigger, pushTrigger } = this.props;
     const content = (
       <React.Fragment>
@@ -36,8 +38,8 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
     return (
       <React.Fragment>
-        { React.cloneElement(trigger, {...trigger.props, onClick: this.handlePrint}) }
-        { React.cloneElement(pushTrigger, {...pushTrigger.props, onClick: this.pushPdfToApi}) }
+        { React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint })) }
+        { React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi })) }
         { ReactDOM.createPortal(content, this.rootEl) }
       </React.Fragment>
     );
@@ -51,22 +53,36 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
   private pushPdfToApi = () => {
     const { url, method, headers } = this.props.pushPdfTo;
-    html2canvas(this.rootEl).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      // A4 size page of PDF
-      const imgWidth = 210;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      const blob = pdf.output('blob');
-      // Make the API call here
-      fetch(url, {
-        method,
-        headers,
-        body: blob
+    domToImage.toPng(this.rootEl)
+      .then((dataUrl) => {
+        const img = new Image();
+        img.src = dataUrl;
+        img.onload = () => {
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: [img.width, img.height]
+          });
+          pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+          pdf.save('document.pdf'); // Optional: save locally
+          const blob = pdf.output('blob');
+          const formData = new FormData();
+          formData.append("file", blob, "document.pdf");
+
+          // Perform the API call
+          fetch(url, {
+            method,
+            headers,
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error(error));
+        };
+      })
+      .catch((error) => {
+        console.error('Error converting to image:', error);
       });
-    });
   }
 
   private onPrintClose = () => {
