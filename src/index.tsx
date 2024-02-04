@@ -31,16 +31,16 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
     const { children, trigger, pushTrigger } = this.props;
     const content = (
       <React.Fragment>
-        { this.createStyle() }
-        { children }
+        {this.createStyle()}
+        {children}
       </React.Fragment>
     );
 
     return (
       <React.Fragment>
-        { React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint })) }
-        { React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi })) }
-        { ReactDOM.createPortal(content, this.rootEl) }
+        {React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint }))}
+        {React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi }))}
+        {ReactDOM.createPortal(content, this.rootEl)}
       </React.Fragment>
     );
   }
@@ -75,9 +75,9 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
             headers,
             body: formData,
           })
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch(error => console.error(error));
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
         };
       })
       .catch((error) => {
@@ -101,21 +101,22 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
   }
 
   private createStyle = () => (
-    <style dangerouslySetInnerHTML={{__html: `
-      #${ this.rootId } {
+    <style dangerouslySetInnerHTML={{
+      __html: `
+      #${this.rootId} {
         display: none;
       }
 
       @media print {
-        body > *:not(#${ this.rootId }) {
+        body > *:not(#${this.rootId}) {
           display: none;
         }
 
-        #${ this.rootId } {
+        #${this.rootId} {
           display: block;
         }
       }
-    `}}/>
+    `}} />
   )
 }
 

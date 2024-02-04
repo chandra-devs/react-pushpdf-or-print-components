@@ -29,5 +29,8 @@
 
     /* Interop Options */
     "esModuleInterop": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"]
 }
