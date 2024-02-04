@@ -3,10 +3,12 @@ import * as ReactDOM from 'react-dom';
 import domToImage from 'dom-to-image';
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export interface IProps {
   trigger: JSX.Element;
   pushTrigger: JSX.Element;
+  generatePdfTrigger: JSX.Element;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
   pushPdfTo: {
@@ -28,7 +30,7 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
   public render() {
 
-    const { children, trigger, pushTrigger } = this.props;
+    const { children, trigger, pushTrigger, generatePdfTrigger } = this.props;
     const content = (
       <React.Fragment>
         {this.createStyle()}
@@ -40,6 +42,7 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
       <React.Fragment>
         {React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint }))}
         {React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi }))}
+        {React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {ReactDOM.createPortal(content, this.rootEl)}
       </React.Fragment>
     );
@@ -84,6 +87,35 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
         console.error('Error converting to image:', error);
       });
   }
+
+  private generatePdf = () => {
+    // Temporarily set the rootEl to display: block;
+    this.rootEl.style.display = 'block';
+    domToImage.toPng(this.rootEl)
+      .then((dataUrl) => {
+        console.log('dataUrl:', dataUrl);
+        const img = new Image();
+        img.src = dataUrl;
+        img.onload = () => {
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: [img.width, img.height]
+          });
+          pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+          pdf.save('document.pdf'); // Optional: save locally
+
+          // Set the rootEl back to display: none;
+          this.rootEl.style.display = 'none';
+        };
+      })
+      .catch((error) => {
+        console.error('Error converting to image:', error);
+
+        // Set the rootEl back to display: none;
+        this.rootEl.style.display = 'none';
+      });
+  };
 
   private onPrintClose = () => {
     window.onafterprint = () => null;

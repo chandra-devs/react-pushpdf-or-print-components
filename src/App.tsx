@@ -10,6 +10,7 @@ const App = () => {
       <PushComponent
         trigger={<Button>Print</Button>}
         pushTrigger={<Button>Save as PDF</Button>}
+        generatePdfTrigger={<Button>Generate PDF</Button>}
         pushPdfTo={{
           url: 'http://localhost:3000/pdf',
           method: 'POST',
