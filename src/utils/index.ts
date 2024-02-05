@@ -36,7 +36,7 @@ const generatePDF = async (
   const targetElement = getTargetElement(targetRefOrFunction);
   if (!targetElement) {
     console.error("Unable to get the target element.");
-    return;
+    return new jsPDF();
   }
   const canvas = await html2canvas(targetElement, {
     useCORS: options.canvas.useCORS,

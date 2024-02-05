@@ -17,6 +17,10 @@ export default class Converter {
     });
   }
   getMarginTopMM() {
+    if (!this.options.page) {
+      return 0; // or some default value
+    }
+
     const margin =
       typeof this.options.page.margin === "object"
         ? this.options.page && this.options.page.margin.top
@@ -24,6 +28,10 @@ export default class Converter {
     return Number(margin);
   }
   getMarginLeftMM() {
+    if (!this.options.page) {
+      return 0; // or some default value
+    }
+
     const margin =
       typeof this.options.page.margin === "object"
         ? this.options.page && this.options.page.margin.left
@@ -31,6 +39,10 @@ export default class Converter {
     return Number(margin);
   }
   getMarginRightMM() {
+    if (!this.options.page) {
+      return 0; // or some default value
+    }
+
     const margin =
       typeof this.options.page.margin === "object"
         ? this.options.page && this.options.page.margin.right
@@ -38,6 +50,10 @@ export default class Converter {
     return Number(margin);
   }
   getMarginBottomMM() {
+    if (!this.options.page) {
+      return 0; // or some default value
+    }
+
     const margin =
       typeof this.options.page.margin === "object"
         ? this.options.page && this.options.page.margin.bottom
@@ -72,16 +88,40 @@ export default class Converter {
     return this.getPageWidthMM() * MM_TO_PX;
   }
   getOriginalCanvasWidth() {
-    return this.canvas.width / this.getScale();
+    if (!this.canvas) {
+      return 0; // or some default value
+    }
+    const scale = this.getScale();
+    if (scale === undefined) {
+      throw new Error("Scale is undefined");
+    }
+
+    return this.canvas.width / scale;
   }
   getOriginalCanvasHeight() {
-    return this.canvas.height / this.getScale();
+    if (!this.canvas) {
+      return 0; // or some default value
+    }
+
+    const scale = this.getScale();
+    if (scale === undefined) {
+      throw new Error("Scale is undefined");
+    }
+
+    return this.canvas.height / scale;
   }
   getCanvasPageAvailableHeight() {
+    if (!this.canvas) {
+      return 0; // or some default value
+    }
+
+    const scale = this.getScale();
+    if (scale === undefined) {
+      throw new Error("Scale is undefined");
+    }
+
     return (
-      this.getPageAvailableHeight() *
-      this.getScale() *
-      this.getHorizontalFitFactor()
+      this.getPageAvailableHeight() * scale * this.getHorizontalFitFactor()
     );
   }
   getPageAvailableWidth() {
@@ -132,6 +172,9 @@ export default class Converter {
     canvasPage.setAttribute("width", String(canvasPageWidth));
     canvasPage.setAttribute("height", String(canvasPageHeight));
     const ctx = canvasPage.getContext("2d");
+    if (ctx === null) {
+      throw new Error("Failed to get 2D context");
+    }
     ctx.drawImage(
       this.canvas,
       0,
@@ -148,6 +191,18 @@ export default class Converter {
   convert(): InstanceType<typeof jsPDF> {
     let pageNumber = 1;
     const numberPages = this.getNumberPages();
+    const scale = this.getScale();
+    if (!this.options.page) {
+      return this.pdf;
+    }
+
+    if (!this.options.canvas) {
+      return this.pdf;
+    }
+
+    if (scale === undefined) {
+      throw new Error("Scale is undefined");
+    }
     while (pageNumber <= numberPages) {
       if (pageNumber > 1) {
         this.pdf.addPage(
@@ -164,11 +219,10 @@ export default class Converter {
       this.pdf.addImage({
         imageData: pageImageDataURL,
         width:
-          canvasPage.width /
-          (this.getScale() * MM_TO_PX * this.getHorizontalFitFactor()),
+          canvasPage.width / (scale * MM_TO_PX * this.getHorizontalFitFactor()),
         height:
           canvasPage.height /
-          (this.getScale() * MM_TO_PX * this.getHorizontalFitFactor()),
+          (scale * MM_TO_PX * this.getHorizontalFitFactor()),
         x: this.getMarginLeftMM(),
         y: this.getMarginTopMM(),
       });
