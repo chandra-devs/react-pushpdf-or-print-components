@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import domToImage from 'dom-to-image';
+import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
 
@@ -15,12 +15,12 @@ export interface IProps {
 export class PushPrintComponents extends React.Component<IProps, {}> {
   private rootId: string = 'react-components-print';
   private rootEl: HTMLElement;
-  private canvasRef = React.useRef<HTMLElement>(null);
 
   public constructor(props: IProps) {
     super(props);
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
+    console.log('this.rootEl:', this.rootEl);
 
   }
 
@@ -31,7 +31,6 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
       <React.Fragment>
         {this.createStyle()}
         {children}
-        <div ref={this.canvasRef as React.RefObject<HTMLDivElement>} />
       </React.Fragment>
     );
 
@@ -50,52 +49,56 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
     window.print();
   }
 
-  private generatePdf = () => {
-    // Check if this.rootEl is initialized
-    if (!this.rootEl) {
-      console.error('Error: this.rootEl is not initialized.');
-      return;
-    }
 
-    // Temporarily set the rootEl to display: block;
+
+  private generatePdf = async () => {
+    const options: Options = {
+      filename: "output.pdf",
+      resolution: Resolution.EXTREME,
+      page: {
+        margin: Margin.SMALL,
+        format: "letter",
+        orientation: "landscape"
+      },
+      canvas: {
+        mimeType: "image/jpeg",
+        qualityRatio: 1
+      },
+      overrides: {
+        pdf: {
+          compress: true
+        },
+        canvas: {
+          useCORS: true
+        }
+      }
+    };
+
+    // Ensure the element is in the DOM before generating the PDF
+    document.body.appendChild(this.rootEl);
+
+    // enable element to display before generating pdf
     this.rootEl.style.display = 'block';
 
-    // Add a slight delay to ensure the element is ready
-    setTimeout(() => {
-      if (this.canvasRef.current) {
-        domToImage.toPng(this.canvasRef.current)
-          .then((dataUrl) => {
-            const img = new Image();
-            console.log('dataUrl:', dataUrl);
-            img.src = dataUrl;
-            console.log('img:', img);
-            img.onload = () => {
-              const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'px',
-                format: [img.width, img.height]
-              });
-              pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
-              pdf.save('document.pdf'); // Optional: save locally
-
-              // Call the onPdf callback if it exists
-              if (this.props.onPdf) {
-                this.props.onPdf(pdf);
-              }
-
-              // Set the rootEl back to display: none;
-              this.rootEl.style.display = 'none';
-            };
-          })
-          .catch((error) => {
-            console.error('Error converting to image:', error);
-
-            // Set the rootEl back to display: none;
-            this.rootEl.style.display = 'none';
-          });
+    try {
+      const pdfBlob = await generatePDF(() => this.rootEl, options);
+      if (typeof this.props.onPdf === 'function') {
+        this.props.onPdf(pdfBlob);
       }
-    }, 500); // Delay of 500ms
+      // disable element after generating pdf
+      this.rootEl.style.display = 'none';
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // disable element on error
+      this.rootEl.style.display = 'none';
+    } finally {
+      // Remove the element from the DOM when done
+      document.body.removeChild(this.rootEl);
+      // disable element after removing from the DOM
+      this.rootEl.style.display = 'none';
+    }
   };
+
 
   private onPrintClose = () => {
     window.onafterprint = () => null;
@@ -108,11 +111,6 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
     if (id) el.setAttribute('id', id);
     if (className) el.setAttribute('class', className);
-
-    // add canvasref to the element if it exists
-    if (this.canvasRef.current) {
-      el.appendChild(this.canvasRef.current);
-    }
 
     return el;
   }

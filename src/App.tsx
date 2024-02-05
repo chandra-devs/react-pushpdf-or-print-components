@@ -5,17 +5,22 @@ import PushComponent from '../src/index'; // Import the missing PushComponent mo
 const App = () => {
   return (
     <div>
-      <h1>Hello, Kishore!</h1>
-      <p>Welcome to your React application with TypeScript.</p>
+      <h1>Print / GenPDF</h1>
+      <p>
+        This is a simple example of how to use the PushComponent module to print or generate a PDF of a component.
+      </p>
       <PushComponent
         trigger={<Button>Print</Button>}
-        generatePdfTrigger={<Button>Generate PDF</Button>}
+        generatePdfTrigger={<Button>Get PDF</Button>}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
         }}
       >
         <div>
-          Content to print or save as PDF.
+          <p>
+            Content to print or save as PDF.
+          </p>
+          <p>This is additional React content.</p>
         </div>
       </PushComponent>
     </div>
