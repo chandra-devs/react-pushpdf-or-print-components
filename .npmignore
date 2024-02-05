@@ -1,0 +1,6 @@
+# Ignore public folder
+/public
+
+# Ignore App.tsx and run.tsx from src
+/src/App.tsx
+/src/run.tsx
