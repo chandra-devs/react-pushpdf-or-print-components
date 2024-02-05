@@ -12,42 +12,52 @@ var PushPrintComponents = /** @class */ (function (_super) {
     function PushPrintComponents(props) {
         var _this = _super.call(this, props) || this;
         _this.rootId = 'react-components-print';
+        _this.canvasRef = React.useRef(null);
         _this.handlePrint = function () {
             document.body.insertAdjacentElement('afterbegin', _this.rootEl);
             window.onafterprint = _this.onPrintClose;
             window.print();
         };
-        _this.pushPdfToApi = function () {
-            var _a = _this.props.pushPdfTo, url = _a.url, method = _a.method, headers = _a.headers;
-            dom_to_image_1.default.toPng(_this.rootEl)
-                .then(function (dataUrl) {
-                var img = new Image();
-                img.src = dataUrl;
-                img.onload = function () {
-                    var pdf = new jspdf_1.default({
-                        orientation: 'portrait',
-                        unit: 'px',
-                        format: [img.width, img.height]
-                    });
-                    pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
-                    pdf.save('document.pdf'); // Optional: save locally
-                    var blob = pdf.output('blob');
-                    var formData = new FormData();
-                    formData.append("file", blob, "document.pdf");
-                    // Perform the API call
-                    fetch(url, {
-                        method: method,
-                        headers: headers,
-                        body: formData,
+        _this.generatePdf = function () {
+            // Check if this.rootEl is initialized
+            if (!_this.rootEl) {
+                console.error('Error: this.rootEl is not initialized.');
+                return;
+            }
+            // Temporarily set the rootEl to display: block;
+            _this.rootEl.style.display = 'block';
+            // Add a slight delay to ensure the element is ready
+            setTimeout(function () {
+                if (_this.canvasRef.current) {
+                    dom_to_image_1.default.toPng(_this.canvasRef.current)
+                        .then(function (dataUrl) {
+                        var img = new Image();
+                        console.log('dataUrl:', dataUrl);
+                        img.src = dataUrl;
+                        console.log('img:', img);
+                        img.onload = function () {
+                            var pdf = new jspdf_1.default({
+                                orientation: 'portrait',
+                                unit: 'px',
+                                format: [img.width, img.height]
+                            });
+                            pdf.addImage(dataUrl, 'PNG', 0, 0, img.width, img.height);
+                            pdf.save('document.pdf'); // Optional: save locally
+                            // Call the onPdf callback if it exists
+                            if (_this.props.onPdf) {
+                                _this.props.onPdf(pdf);
+                            }
+                            // Set the rootEl back to display: none;
+                            _this.rootEl.style.display = 'none';
+                        };
                     })
-                        .then(function (response) { return response.json(); })
-                        .then(function (data) { return console.log(data); })
-                        .catch(function (error) { return console.error(error); });
-                };
-            })
-                .catch(function (error) {
-                console.error('Error converting to image:', error);
-            });
+                        .catch(function (error) {
+                        console.error('Error converting to image:', error);
+                        // Set the rootEl back to display: none;
+                        _this.rootEl.style.display = 'none';
+                    });
+                }
+            }, 500); // Delay of 500ms
         };
         _this.onPrintClose = function () {
             window.onafterprint = function () { return null; };
@@ -59,6 +69,10 @@ var PushPrintComponents = /** @class */ (function (_super) {
                 el.setAttribute('id', id);
             if (className)
                 el.setAttribute('class', className);
+            // add canvasref to the element if it exists
+            if (_this.canvasRef.current) {
+                el.appendChild(_this.canvasRef.current);
+            }
             return el;
         };
         _this.createStyle = function () { return (React.createElement("style", { dangerouslySetInnerHTML: {
@@ -68,13 +82,14 @@ var PushPrintComponents = /** @class */ (function (_super) {
         return _this;
     }
     PushPrintComponents.prototype.render = function () {
-        var _a = this.props, children = _a.children, trigger = _a.trigger, pushTrigger = _a.pushTrigger;
+        var _a = this.props, children = _a.children, trigger = _a.trigger, generatePdfTrigger = _a.generatePdfTrigger;
         var content = (React.createElement(React.Fragment, null,
             this.createStyle(),
-            children));
+            children,
+            React.createElement("div", { ref: this.canvasRef })));
         return (React.createElement(React.Fragment, null,
             React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint })),
-            React.cloneElement(pushTrigger, tslib.__assign({}, pushTrigger.props, { onClick: this.pushPdfToApi })),
+            React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf })),
             ReactDOM.createPortal(content, this.rootEl)));
     };
     return PushPrintComponents;

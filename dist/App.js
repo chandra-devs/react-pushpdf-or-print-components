@@ -8,9 +8,8 @@ var App = function () {
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Hello, Kishore!"),
         react_1.default.createElement("p", null, "Welcome to your React application with TypeScript."),
-        react_1.default.createElement(index_1.default, { trigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Print"), pushTrigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Save as PDF"), pushPdfTo: {
-                url: 'http://localhost:3000/pdf',
-                method: 'POST',
+        react_1.default.createElement(index_1.default, { trigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Print"), generatePdfTrigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Generate PDF"), onPdf: function (pdf) {
+                pdf.save('test.pdf');
             } },
             react_1.default.createElement("div", null, "Content to print or save as PDF."))));
 };
