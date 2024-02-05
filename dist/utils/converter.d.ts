@@ -1,0 +1,36 @@
+import jsPDF from "jspdf";
+import { ConversionOptions, Options } from "./types";
+export default class Converter {
+    pdf: InstanceType<typeof jsPDF>;
+    canvas: HTMLCanvasElement;
+    options: Options;
+    constructor(canvas: HTMLCanvasElement, options: ConversionOptions);
+    getMarginTopMM(): number;
+    getMarginLeftMM(): number;
+    getMarginRightMM(): number;
+    getMarginBottomMM(): number;
+    getMarginTop(): number;
+    getMarginBottom(): number;
+    getMarginLeft(): number;
+    getMarginRight(): number;
+    getScale(): number | undefined;
+    getPageHeight(): number;
+    getPageHeightMM(): number;
+    getPageWidthMM(): number;
+    getPageWidth(): number;
+    getOriginalCanvasWidth(): number;
+    getOriginalCanvasHeight(): number;
+    getCanvasPageAvailableHeight(): number;
+    getPageAvailableWidth(): number;
+    getPageAvailableHeight(): number;
+    getPageAvailableWidthMM(): number;
+    getPageAvailableHeightMM(): number;
+    getNumberPages(): number;
+    getHorizontalFitFactor(): number;
+    getCanvasOffsetY(pageNumber: number): number;
+    getCanvasHeightLeft(pageNumber: number): number;
+    getCanvasPageHeight(pageNumber: number): number;
+    getCanvasPageWidth(): number;
+    createCanvasPage(pageNumber: number): HTMLCanvasElement;
+    convert(): InstanceType<typeof jsPDF>;
+}

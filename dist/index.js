@@ -4,7 +4,7 @@ exports.PushPrintComponents = void 0;
 var tslib_1 = require("tslib");
 var React = tslib_1.__importStar(require("react"));
 var ReactDOM = tslib_1.__importStar(require("react-dom"));
-var react_to_pdf_1 = tslib_1.__importStar(require("react-to-pdf"));
+var index_1 = tslib_1.__importStar(require("./utils/index"));
 var tslib = tslib_1.__importStar(require("tslib"));
 var PushPrintComponents = /** @class */ (function (_super) {
     tslib_1.__extends(PushPrintComponents, _super);
@@ -24,9 +24,9 @@ var PushPrintComponents = /** @class */ (function (_super) {
                     case 0:
                         options = {
                             filename: "output.pdf",
-                            resolution: react_to_pdf_1.Resolution.EXTREME,
+                            resolution: index_1.Resolution.EXTREME,
                             page: {
-                                margin: react_to_pdf_1.Margin.SMALL,
+                                margin: index_1.Margin.SMALL,
                                 format: "letter",
                                 orientation: "landscape"
                             },
@@ -50,7 +50,7 @@ var PushPrintComponents = /** @class */ (function (_super) {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, 4, 5]);
-                        return [4 /*yield*/, (0, react_to_pdf_1.default)(function () { return _this.rootEl; }, options)];
+                        return [4 /*yield*/, (0, index_1.default)(function () { return _this.rootEl; }, options)];
                     case 2:
                         pdfBlob = _a.sent();
                         if (typeof this.props.onPdf === 'function') {
