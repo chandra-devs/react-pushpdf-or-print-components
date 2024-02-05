@@ -9,11 +9,9 @@ const App = () => {
       <p>Welcome to your React application with TypeScript.</p>
       <PushComponent
         trigger={<Button>Print</Button>}
-        pushTrigger={<Button>Save as PDF</Button>}
         generatePdfTrigger={<Button>Generate PDF</Button>}
-        pushPdfTo={{
-          url: 'http://localhost:3000/pdf',
-          method: 'POST',
+        onPdf={(pdf) => {
+          pdf.save('test.pdf');
         }}
       >
         <div>
