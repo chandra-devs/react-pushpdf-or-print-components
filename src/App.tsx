@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import PushComponent from '../src/index'; // Import the missing PushComponent module
+// import PushComponent from '../src/index'; // Import the missing PushComponent module
+import PushComponent from '../dist/index'; // Import the missing PushComponent module
+
 
 const App = () => {
   return (

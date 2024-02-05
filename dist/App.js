@@ -4,6 +4,7 @@ var tslib_1 = require("tslib");
 var react_1 = tslib_1.__importDefault(require("react"));
 var react_bootstrap_1 = require("react-bootstrap");
 var index_1 = tslib_1.__importDefault(require("../src/index")); // Import the missing PushComponent module
+// import PushComponent from '../dist/index'; // Import the missing PushComponent module
 var App = function () {
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("h1", null, "Print / GenPDF"),
