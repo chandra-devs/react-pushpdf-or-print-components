@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PushPrintComponents = void 0;
 var tslib_1 = require("tslib");
-var React = require("react");
-var ReactDOM = require("react-dom");
-var dom_to_image_1 = require("dom-to-image");
-var tslib = require("tslib");
-var jspdf_1 = require("jspdf");
+var React = tslib_1.__importStar(require("react"));
+var ReactDOM = tslib_1.__importStar(require("react-dom"));
+var dom_to_image_1 = tslib_1.__importDefault(require("dom-to-image"));
+var tslib = tslib_1.__importStar(require("tslib"));
+var jspdf_1 = tslib_1.__importDefault(require("jspdf"));
 var PushPrintComponents = /** @class */ (function (_super) {
     tslib_1.__extends(PushPrintComponents, _super);
     function PushPrintComponents(props) {
@@ -61,7 +61,9 @@ var PushPrintComponents = /** @class */ (function (_super) {
                 el.setAttribute('class', className);
             return el;
         };
-        _this.createStyle = function () { return (React.createElement("style", { dangerouslySetInnerHTML: { __html: "\n      #".concat(_this.rootId, " {\n        display: none;\n      }\n\n      @media print {\n        body > *:not(#").concat(_this.rootId, ") {\n          display: none;\n        }\n\n        #").concat(_this.rootId, " {\n          display: block;\n        }\n      }\n    ") } })); };
+        _this.createStyle = function () { return (React.createElement("style", { dangerouslySetInnerHTML: {
+                __html: "\n      #".concat(_this.rootId, " {\n        display: none;\n      }\n\n      @media print {\n        body > *:not(#").concat(_this.rootId, ") {\n          display: none;\n        }\n\n        #").concat(_this.rootId, " {\n          display: block;\n        }\n      }\n    ")
+            } })); };
         _this.rootEl = _this.createDivElement(_this.rootId, props.className);
         return _this;
     }
