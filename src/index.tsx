@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+import generatePDF, { Resolution, Margin, Options } from "./utils/index";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
 
