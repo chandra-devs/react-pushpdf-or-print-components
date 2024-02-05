@@ -1,7 +1,7 @@
 {
   "name": "react-pushpdf-or-print-components",
   "description": "React components to print or push generated PDFs from your app.",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "keywords": [
     "react",
     "component",
@@ -36,7 +36,9 @@
     "typescript": "^5.3.3",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "dependencies": {
     "canvas": "^2.11.2",

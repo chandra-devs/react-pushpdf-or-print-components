@@ -1,7 +1,6 @@
 # React PushPrintComponents
-
-[![npm version](https://badge.fury.io/js/react-pushpdf-or-print-components.svg)](https://badge.fury.io/js/react-pushpdf-or-print-components)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  
+  [![License](https://img.shields.io/npm/l/react-pushpdf-or-print-components.svg)]()
 
 `PushPrintComponents` is a versatile React component designed to enhance your web applications with printing and PDF generation capabilities. Utilizing the jsPDF library, it captures the current view of a component, enabling it to be printed directly from the browser or saved as a PDF. This makes it an ideal solution for generating reports, invoices, or any content that requires hard copies or digital preservation.
 
