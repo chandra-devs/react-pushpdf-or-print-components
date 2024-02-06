@@ -14,6 +14,8 @@ const App = () => {
       <PushComponent
         printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
+        showPreviewTrigger={<Button>Show Preview</Button>}
+        previewOptions={{ title: 'Sample Page' }}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
         }}

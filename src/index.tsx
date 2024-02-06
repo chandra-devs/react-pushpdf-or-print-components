@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import './PushPrintComponents.css';
 import generatePDF, { Resolution, Margin, Options } from "./utils/index";
+import Preview from "./utils/Preview";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
 
@@ -18,9 +20,15 @@ interface FormField {
 }
 
 
-interface previewOptions {
+export interface previewOptions {
   formFields?: FormField[];
-  className?:string;
+  className?: string;
+  title?: string;
+  description?: string;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+  onSubmit?: (data: any) => void;
+  onCancel?: () => void;
 }
 export interface IProps {
   printTrigger?: JSX.Element;
@@ -32,7 +40,7 @@ export interface IProps {
   onPdf?: (pdf: jsPDF) => void;
 }
 
-export class PushPrintComponents extends React.Component<IProps, {}> {
+export class PushPrintComponents extends React.Component<IProps, { showPreview: boolean }> {
   private rootId: string = 'react-components-print';
   private rootEl: HTMLElement;
 
@@ -41,12 +49,14 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
     console.log('this.rootEl:', this.rootEl);
+    this.state = {
+      showPreview: false
+    };
 
   }
 
   public render() {
-
-    const { children, printTrigger, generatePdfTrigger, showPreviewTrigger } = this.props;
+    const { children, printTrigger, generatePdfTrigger, showPreviewTrigger, previewOptions } = this.props;
     const content = (
       <React.Fragment>
         {this.createStyle()}
@@ -54,13 +64,19 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
       </React.Fragment>
     );
 
+    const componentStyle = {
+      width: '100vw', // Set width to 100% of the viewport width
+      height: '100vh', // Set height to 100% of the viewport height
+    };
+
     return (
-      <React.Fragment>
+      <div style={componentStyle}>
         {printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint }))}
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-      </React.Fragment>
+        {this.state.showPreview && <Preview previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+      </div>
     );
   }
 
@@ -72,8 +88,11 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
 
   private showPreview = () => {
-    document.body.insertAdjacentElement('afterbegin', this.rootEl);
-    window.onafterprint = this.onPrintClose;
+    this.setState({ showPreview: true });
+  }
+
+  private closePreview = () => {
+    this.setState({ showPreview: false });
   }
 
 

@@ -2,6 +2,7 @@ import { useRef, useCallback } from "react";
 import html2canvas from "html2canvas";
 
 import Converter from "./converter";
+import Preview from "./Preview";
 import { Options, TargetElementFinder, UsePDFResult } from "./types";
 import { buildConvertOptions } from "./utils";
 import jsPDF from "jspdf";
