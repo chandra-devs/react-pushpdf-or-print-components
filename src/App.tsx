@@ -7,15 +7,11 @@ import PushComponent from '../src/index'; // Import the missing PushComponent mo
 const App = () => {
   return (
     <div>
-      <h1>Print / GenPDF</h1>
-      <p>
-        This is a simple example of how to use the PushComponent module to print or generate a PDF of a component.
-      </p>
       <PushComponent
         printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
-        showPreviewTrigger={<Button>Show Preview</Button>}
-        previewOptions={{ title: 'Sample Page' }}
+        showPreviewTrigger={<Button>Share</Button>}
+        previewOptions={{ title: 'Share Sample Page' }}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
         }}
