@@ -12,7 +12,7 @@ const App = () => {
         This is a simple example of how to use the PushComponent module to print or generate a PDF of a component.
       </p>
       <PushComponent
-        trigger={<Button>Print</Button>}
+        printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
