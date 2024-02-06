@@ -1,18 +1,46 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import './PushPrintComponents.css';
 import generatePDF, { Resolution, Margin, Options } from "./utils/index";
+import Preview from "./utils/Preview";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
 
+interface FormField {
+  name: string;
+  type: ['text', 'number', 'email', 'tel', 'date', 'time', 'datetime-local', 'textarea', 'select', 'checkbox', 'radio'];
+  label: string;
+  defaultValue?: string;
+  validation?: {
+    required?: boolean;
+    pattern?: string;
+    minLength?: number;
+    maxLength?: number;
+  };
+}
+
+
+export interface previewOptions {
+  formFields?: FormField[];
+  className?: string;
+  title?: string;
+  description?: string;
+  submitButtonText?: string;
+  cancelButtonText?: string;
+  onSubmit?: (data: any) => void;
+  onCancel?: () => void;
+}
 export interface IProps {
-  trigger: JSX.Element;
-  generatePdfTrigger: JSX.Element;
+  printTrigger?: JSX.Element;
+  generatePdfTrigger?: JSX.Element;
+  showPreviewTrigger?: JSX.Element;
+  previewOptions?: previewOptions;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
   onPdf?: (pdf: jsPDF) => void;
 }
 
-export class PushPrintComponents extends React.Component<IProps, {}> {
+export class PushPrintComponents extends React.Component<IProps, { showPreview: boolean }> {
   private rootId: string = 'react-components-print';
   private rootEl: HTMLElement;
 
@@ -21,12 +49,14 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
     console.log('this.rootEl:', this.rootEl);
+    this.state = {
+      showPreview: false
+    };
 
   }
 
   public render() {
-
-    const { children, trigger, generatePdfTrigger } = this.props;
+    const { children, printTrigger, generatePdfTrigger, showPreviewTrigger, previewOptions } = this.props;
     const content = (
       <React.Fragment>
         {this.createStyle()}
@@ -34,12 +64,19 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
       </React.Fragment>
     );
 
+    const componentStyle = {
+      width: '100vw', // Set width to 100% of the viewport width
+      height: '100vh', // Set height to 100% of the viewport height
+    };
+
     return (
-      <React.Fragment>
-        {React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint }))}
-        {React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
+      <div style={componentStyle}>
+        {printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint }))}
+        {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
+        {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-      </React.Fragment>
+        {this.state.showPreview && <Preview previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+      </div>
     );
   }
 
@@ -50,6 +87,14 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
   }
 
 
+  private showPreview = () => {
+    this.setState({ showPreview: true });
+  }
+
+  private closePreview = () => {
+    this.setState({ showPreview: false });
+  }
+
 
   private generatePdf = async () => {
     const options: Options = {
@@ -57,8 +102,8 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
       resolution: Resolution.EXTREME,
       page: {
         margin: Margin.SMALL,
-        format: "letter",
-        orientation: "landscape"
+        format: "a4",
+        orientation: "portrait"
       },
       canvas: {
         mimeType: "image/jpeg",
@@ -83,6 +128,7 @@ export class PushPrintComponents extends React.Component<IProps, {}> {
     try {
       const pdfBlob = await generatePDF(() => this.rootEl, options);
       if (typeof this.props.onPdf === 'function') {
+        console.log(this.rootEl);
         this.props.onPdf(pdfBlob);
       }
       // disable element after generating pdf
