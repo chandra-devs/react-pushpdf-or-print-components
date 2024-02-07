@@ -11,7 +11,25 @@ const App = () => {
         printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
         showPreviewTrigger={<Button>Share</Button>}
-        previewOptions={{ title: 'Share Sample Page' }}
+        previewOptions={{
+          title: 'Share Sample Page', formFields: [
+            { name: 'title', label: 'Title', type: 'text', validation: { required: true } },
+            { name: 'reportType', label: 'Report Type', type: 'select', defaultValue: 'Discharge Report, Doctor Notes', validation: { required: true } },
+            {
+              name: 'notes',
+              label: 'Notes',
+              type: 'textarea',
+              rows: 5,
+              validation: { required: true }
+            }
+          ],
+          description: 'The following content will be shared with the patient. Please fill in the required fields.',
+          submitButtonText: 'Share to Patient',
+          cancelButtonText: 'Cancel',
+          onSubmit: (data) => {
+            console.log('Submitted:', data);
+          },
+        }}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
         }}

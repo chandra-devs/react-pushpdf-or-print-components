@@ -8,9 +8,10 @@ import jsPDF from 'jspdf';
 
 interface FormField {
   name: string;
-  type: ['text', 'number', 'email', 'tel', 'date', 'time', 'datetime-local', 'textarea', 'select', 'checkbox', 'radio'];
+  type: 'text' | 'number' |'email' |'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' |  'radio'
   label: string;
   defaultValue?: string;
+  rows?: number;
   validation?: {
     required?: boolean;
     pattern?: string;

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import "./fields.css";
 
 interface FieldProps {
     label: string;
     type: string;
     defaultValue: string;
+    rows?: number;
     validation?: {
         required?: boolean;
         pattern?: string;
@@ -11,7 +13,6 @@ interface FieldProps {
         maxLength?: number;
         min?: number;
         max?: number;
-        rows?: number;
     };
 }
 
@@ -21,19 +22,20 @@ class Field extends Component<FieldProps> {
         const lbl = this.props.label;
         const type = this.props.type;
         const defaultValue = this.props.defaultValue;
+        const rows = this.props.rows;
         const validation = this.props.validation;
 
         switch (type) {
             case 'text':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input type="text" defaultValue={defaultValue} required={validation?.required} pattern={validation?.pattern} minLength={validation?.minLength} maxLength={validation?.maxLength} />
                     </div>
                 );
             case 'number':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type="number"
@@ -46,7 +48,7 @@ class Field extends Component<FieldProps> {
                 );
             case 'email':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type="email"
@@ -60,7 +62,7 @@ class Field extends Component<FieldProps> {
                 );
             case 'tel':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type="tel"
@@ -74,7 +76,7 @@ class Field extends Component<FieldProps> {
                 );
             case 'date':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type="date"
@@ -88,7 +90,7 @@ class Field extends Component<FieldProps> {
                 );
             case 'time':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type="time"
@@ -102,7 +104,7 @@ class Field extends Component<FieldProps> {
                 );
             case 'datetime-local':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input
                             type={type}
@@ -116,21 +118,21 @@ class Field extends Component<FieldProps> {
                 );
             case 'textarea':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <textarea
                             defaultValue={defaultValue}
                             required={validation?.required}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
-                            rows={validation?.rows}
+                            rows={rows}
                         />
                     </div>
                 );
             case 'select':
                 const options = defaultValue.split(',');
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <select
                             defaultValue={defaultValue}
@@ -144,14 +146,14 @@ class Field extends Component<FieldProps> {
                 );
             case 'checkbox':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input type="checkbox" defaultValue={defaultValue} />
                     </div>
                 );
             case 'radio':
                 return (
-                    <div>
+                    <div className='formField'>
                         <label>{lbl}</label>
                         <input type="radio" defaultValue={defaultValue} />
                     </div>
