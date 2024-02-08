@@ -110,8 +110,8 @@ var PushPrintComponents = /** @class */ (function (_super) {
             this.createStyle(),
             children));
         var componentStyle = {
-            width: '100vw', // Set width to 100% of the viewport width
-            height: '100vh', // Set height to 100% of the viewport height
+        // width: '100vw', // Set width to 100% of the viewport width
+        // height: '100vh', // Set height to 100% of the viewport height
         };
         return (React.createElement("div", { style: componentStyle, className: 'react-components-print' },
             printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint })),
