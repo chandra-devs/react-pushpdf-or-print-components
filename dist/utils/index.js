@@ -25,10 +25,10 @@ var usePDF = function (usePDFoptions) {
 };
 exports.usePDF = usePDF;
 var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-    var options, targetElement, canvas, converter, pdf, _a, pdfFilename;
-    var _b, _c;
-    return tslib_1.__generator(this, function (_d) {
-        switch (_d.label) {
+    var options, targetElement, canvas, converter, pdf, _a, pdfOutput, filename, blob, file, pdfFilename;
+    var _b, _c, _d;
+    return tslib_1.__generator(this, function (_e) {
+        switch (_e.label) {
             case 0:
                 options = (0, utils_1.buildConvertOptions)(customOptions);
                 targetElement = getTargetElement(targetRefOrFunction);
@@ -36,30 +36,40 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                     console.error("Unable to get the target element.");
                     return [2 /*return*/, new jspdf_1.default()];
                 }
-                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, windowHeight: targetElement.scrollHeight, windowWidth: targetElement.scrollWidth }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
             case 1:
-                canvas = _d.sent();
+                canvas = _e.sent();
                 converter = new converter_1.default(canvas, options);
                 pdf = converter.convert();
                 _a = options.method;
                 switch (_a) {
                     case "build": return [3 /*break*/, 2];
                     case "open": return [3 /*break*/, 3];
-                    case "save": return [3 /*break*/, 4];
+                    case "buildAndCreateFile": return [3 /*break*/, 4];
+                    case "save": return [3 /*break*/, 5];
                 }
-                return [3 /*break*/, 4];
+                return [3 /*break*/, 5];
             case 2: return [2 /*return*/, pdf];
             case 3:
                 {
                     window.open(pdf.output("bloburl"), "_blank");
                     return [2 /*return*/, pdf];
                 }
-                _d.label = 4;
+                _e.label = 4;
             case 4:
-                pdfFilename = (_c = options.filename) !== null && _c !== void 0 ? _c : "".concat(new Date().getTime(), ".pdf");
-                return [4 /*yield*/, pdf.save(pdfFilename, { returnPromise: true })];
+                {
+                    pdfOutput = pdf.output();
+                    filename = (_c = options.filename) !== null && _c !== void 0 ? _c : "".concat(new Date().getTime(), ".pdf");
+                    blob = new Blob([pdfOutput], { type: 'application/pdf' });
+                    file = new File([blob], filename, { type: 'application/pdf' });
+                    return [2 /*return*/, file];
+                }
+                _e.label = 5;
             case 5:
-                _d.sent();
+                pdfFilename = (_d = options.filename) !== null && _d !== void 0 ? _d : "".concat(new Date().getTime(), ".pdf");
+                return [4 /*yield*/, pdf.save(pdfFilename, { returnPromise: true })];
+            case 6:
+                _e.sent();
                 return [2 /*return*/, pdf];
         }
     });

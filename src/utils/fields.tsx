@@ -167,6 +167,7 @@ class Field extends Component<FieldProps> {
                             required={validation?.required}
                             onChange={this.props.onSelectionChange}
                         >
+                            <option value="">Select</option>
                             {options.map((option: string, index: number) => (
                                 <option key={index}>{option}</option>
                             ))}

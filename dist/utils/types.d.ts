@@ -40,7 +40,7 @@ export type ConversionOptions = {
      * returns the PDF instance in the invoked function `generatePDF` or `toPDF`.
      * By default is `open`.
      */
-    method: "save" | "open" | "build";
+    method: "save" | "open" | "build" | "buildAndCreateFile";
     /**
      * Resolution in a scale where 1 gives a low resolution and possible blurred
      * image, 3 a medium and 10 an extreme quality. The size of the file increases

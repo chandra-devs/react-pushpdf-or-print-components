@@ -29,7 +29,7 @@ const App = () => {
           submitButtonText: 'Share to Patient',
           cancelButtonText: 'Cancel',
           onSubmit: (data) => {
-            
+            console.log('Submitted Data:', data);
           },
         }}
         onPdf={(pdf) => {

@@ -16,9 +16,6 @@ interface onChangeHandlers {
     handleTextAreaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-interface pdfFile {
-    pdfFile: File | null;
-}
 
 const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePreview, previewOptions }) => {
     const [formFields, setFormFields] = useState<any[]>([]);
@@ -27,7 +24,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
         generatePdf();
     }, []);
     useEffect(() => {
-        
+
         console.log('pdfFile:', pdfFile);
     }, [formFields, pdfFile]);
 
@@ -51,7 +48,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
 
     const generatePdf = async () => {
         const options: Options = {
-            method: "open",
+            method: "buildAndCreateFile",
             filename: previewOptions?.pdfFileName,
             resolution: Resolution.EXTREME,
             page: {
@@ -106,18 +103,23 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
                 <div className="previewscreen" id="previewScreen">
                     {children}
                 </div>
-                <div className="form"><Form previewOptions={previewOptions ?? {}} onChangeHandlers={
-                    {
-                        handleChange: handleChange,
-                        handleSelectionChange: handleSelectionChange,
-                        handleTextAreaChange: handleTextAreaChange
-                    }
-
-                } pdfFile={pdfFile} /></div>
+                <div className="form"><Form previewOptions={previewOptions ?? {}} onChangeHandlers={{
+                    handleChange: handleChange,
+                    handleSelectionChange: handleSelectionChange,
+                    handleTextAreaChange: handleTextAreaChange
+                }}/></div>
             </div>
 
             <div className='actions'>
-                <button>{previewOptions?.submitButtonText ?? 'Submit'}</button>
+                <button onClick={
+                    () => {
+                        if (previewOptions?.onSubmit) {
+                            previewOptions.onSubmit({fields: formFields, pdf: pdfFile});
+                        }
+                        closePreview();
+                    }
+                
+                }>{previewOptions?.submitButtonText ?? 'Submit'}</button>
                 <button onClick={() => closePreview()}>{previewOptions?.cancelButtonText ?? 'Cancel'}</button>
             </div>
 
@@ -125,19 +127,10 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
     );
 };
 
-const Form: React.FC<{ previewOptions: previewOptions, onChangeHandlers: onChangeHandlers, pdfFile: pdfFile }> = ({ previewOptions, onChangeHandlers, pdfFile }) => {
-    useEffect(() => {}, []);
-    
-    if (!pdfFile) {
-        return <div>Loading...</div>;
-    }
-    
+const Form: React.FC<{ previewOptions: previewOptions, onChangeHandlers: onChangeHandlers }> = ({ previewOptions, onChangeHandlers }) => {
+    useEffect(() => { }, []);
     return (
         <div className="form">
-            <div className='file'>
-                Generated File: {pdfFile?.name}
-            </div>
-            <br/>
             {previewOptions?.formFields?.map((field: any, index: number) => (
                 <Field key={index} {...field} onChange={
                     (e: React.ChangeEvent<HTMLInputElement>) => onChangeHandlers.handleChange(e)

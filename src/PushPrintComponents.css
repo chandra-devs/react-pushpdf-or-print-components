@@ -71,12 +71,6 @@
     box-sizing: border-box;
 }
 
-.preview .view .form .file {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-}
-
 .preview .close {
     position: absolute;
     top: 0;

@@ -4,7 +4,9 @@ exports.PushPrintComponents = void 0;
 var tslib_1 = require("tslib");
 var React = tslib_1.__importStar(require("react"));
 var ReactDOM = tslib_1.__importStar(require("react-dom"));
+require("./PushPrintComponents.css");
 var index_1 = tslib_1.__importStar(require("./utils/index"));
+var Preview_1 = tslib_1.__importDefault(require("./utils/Preview"));
 var tslib = tslib_1.__importStar(require("tslib"));
 var PushPrintComponents = /** @class */ (function (_super) {
     tslib_1.__extends(PushPrintComponents, _super);
@@ -15,6 +17,12 @@ var PushPrintComponents = /** @class */ (function (_super) {
             document.body.insertAdjacentElement('afterbegin', _this.rootEl);
             window.onafterprint = _this.onPrintClose;
             window.print();
+        };
+        _this.showPreview = function () {
+            _this.setState({ showPreview: true });
+        };
+        _this.closePreview = function () {
+            _this.setState({ showPreview: false });
         };
         _this.generatePdf = function () { return tslib_1.__awaiter(_this, void 0, void 0, function () {
             var options, pdfBlob, error_1;
@@ -27,8 +35,8 @@ var PushPrintComponents = /** @class */ (function (_super) {
                             resolution: index_1.Resolution.EXTREME,
                             page: {
                                 margin: index_1.Margin.SMALL,
-                                format: "letter",
-                                orientation: "landscape"
+                                format: "a4",
+                                orientation: "portrait"
                             },
                             canvas: {
                                 mimeType: "image/jpeg",
@@ -91,18 +99,26 @@ var PushPrintComponents = /** @class */ (function (_super) {
                 __html: "\n      #".concat(_this.rootId, " {\n        display: none;\n      }\n\n      @media print {\n        body > *:not(#").concat(_this.rootId, ") {\n          display: none;\n        }\n\n        #").concat(_this.rootId, " {\n          display: block;\n        }\n      }\n    ")
             } })); };
         _this.rootEl = _this.createDivElement(_this.rootId, props.className);
-        
+        _this.state = {
+            showPreview: false
+        };
         return _this;
     }
     PushPrintComponents.prototype.render = function () {
-        var _a = this.props, children = _a.children, trigger = _a.trigger, generatePdfTrigger = _a.generatePdfTrigger;
+        var _a = this.props, children = _a.children, printTrigger = _a.printTrigger, generatePdfTrigger = _a.generatePdfTrigger, showPreviewTrigger = _a.showPreviewTrigger, previewOptions = _a.previewOptions;
         var content = (React.createElement(React.Fragment, null,
             this.createStyle(),
             children));
-        return (React.createElement(React.Fragment, null,
-            React.cloneElement(trigger, tslib.__assign({}, trigger.props, { onClick: this.handlePrint })),
-            React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf })),
-            ReactDOM.createPortal(content, this.rootEl)));
+        var componentStyle = {
+            width: '100vw', // Set width to 100% of the viewport width
+            height: '100vh', // Set height to 100% of the viewport height
+        };
+        return (React.createElement("div", { style: componentStyle, className: 'react-components-print' },
+            printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint })),
+            generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf })),
+            showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview })),
+            ReactDOM.createPortal(content, this.rootEl),
+            this.state.showPreview && React.createElement(Preview_1.default, { previewPosition: 'right', closePreview: this.closePreview, children: children, previewOptions: previewOptions })));
     };
     return PushPrintComponents;
 }(React.Component));
