@@ -1,4 +1,9 @@
 /* PushPrintComponents.css */
+
+.react-components-print > button {
+    margin:2px
+} 
+
 .preview {
     display: flex;
     justify-content: flex-start;
@@ -64,6 +69,12 @@
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.preview .view .form .file {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
 }
 
 .preview .close {

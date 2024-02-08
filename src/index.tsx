@@ -26,6 +26,7 @@ export interface previewOptions {
   className?: string;
   title?: string;
   description?: string;
+  pdfFileName?: string;
   submitButtonText?: string;
   cancelButtonText?: string;
   onSubmit?: (data: any) => void;
@@ -49,7 +50,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     super(props);
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
-    console.log('this.rootEl:', this.rootEl);
+    
     this.state = {
       showPreview: false
     };
@@ -71,7 +72,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     };
 
     return (
-      <div style={componentStyle}>
+      <div style={componentStyle} className='react-components-print'>
         {printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint }))}
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
@@ -129,7 +130,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     try {
       const pdfBlob = await generatePDF(() => this.rootEl, options);
       if (typeof this.props.onPdf === 'function') {
-        console.log(this.rootEl);
+        
         this.props.onPdf(pdfBlob);
       }
       // disable element after generating pdf

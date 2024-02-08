@@ -91,7 +91,7 @@ var PushPrintComponents = /** @class */ (function (_super) {
                 __html: "\n      #".concat(_this.rootId, " {\n        display: none;\n      }\n\n      @media print {\n        body > *:not(#").concat(_this.rootId, ") {\n          display: none;\n        }\n\n        #").concat(_this.rootId, " {\n          display: block;\n        }\n      }\n    ")
             } })); };
         _this.rootEl = _this.createDivElement(_this.rootId, props.className);
-        console.log('this.rootEl:', _this.rootEl);
+        
         return _this;
     }
     PushPrintComponents.prototype.render = function () {

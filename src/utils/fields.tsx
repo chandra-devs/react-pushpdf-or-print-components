@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./fields.css";
 
 interface FieldProps {
+    name?: string;
     label: string;
     type: string;
     defaultValue: string;
@@ -14,11 +15,14 @@ interface FieldProps {
         min?: number;
         max?: number;
     };
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelectionChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    onTextAreaChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 class Field extends Component<FieldProps> {
     render() {
-
+        const name = this.props.name;
         const lbl = this.props.label;
         const type = this.props.type;
         const defaultValue = this.props.defaultValue;
@@ -30,7 +34,16 @@ class Field extends Component<FieldProps> {
                 return (
                     <div className='formField'>
                         <label>{lbl}</label>
-                        <input type="text" defaultValue={defaultValue} required={validation?.required} pattern={validation?.pattern} minLength={validation?.minLength} maxLength={validation?.maxLength} />
+                        <input
+                            name={name}
+                            type="text"
+                            defaultValue={defaultValue}
+                            required={validation?.required}
+                            pattern={validation?.pattern}
+                            minLength={validation?.minLength}
+                            maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
+                        />
                     </div>
                 );
             case 'number':
@@ -38,11 +51,13 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type="number"
                             defaultValue={defaultValue}
                             required={validation?.required}
                             min={validation?.min}
                             max={validation?.max}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -51,12 +66,14 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type="email"
                             defaultValue={defaultValue}
                             required={validation?.required}
                             pattern={validation?.pattern}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -65,12 +82,14 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type="tel"
                             defaultValue={defaultValue}
                             required={validation?.required}
                             pattern={validation?.pattern}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -79,12 +98,14 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type="date"
                             defaultValue={defaultValue}
                             required={validation?.required}
                             pattern={validation?.pattern}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -93,12 +114,14 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type="time"
                             defaultValue={defaultValue}
                             required={validation?.required}
                             pattern={validation?.pattern}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -107,12 +130,14 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <input
+                            name={name}
                             type={type}
                             defaultValue={defaultValue}
                             required={validation?.required}
                             pattern={validation?.pattern}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
+                            onBlur={this.props.onChange}
                         />
                     </div>
                 );
@@ -121,11 +146,13 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <textarea
+                            name={name}
                             defaultValue={defaultValue}
                             required={validation?.required}
                             minLength={validation?.minLength}
                             maxLength={validation?.maxLength}
                             rows={rows}
+                            onBlur={this.props.onTextAreaChange}
                         />
                     </div>
                 );
@@ -135,8 +162,10 @@ class Field extends Component<FieldProps> {
                     <div className='formField'>
                         <label>{lbl}</label>
                         <select
+                            name={name}
                             defaultValue={defaultValue}
                             required={validation?.required}
+                            onChange={this.props.onSelectionChange}
                         >
                             {options.map((option: string, index: number) => (
                                 <option key={index}>{option}</option>
@@ -148,14 +177,18 @@ class Field extends Component<FieldProps> {
                 return (
                     <div className='formField'>
                         <label>{lbl}</label>
-                        <input type="checkbox" defaultValue={defaultValue} />
+                        <input name={name} type="checkbox" defaultValue={defaultValue}
+                            onBlur={this.props.onChange}
+                        />
                     </div>
                 );
             case 'radio':
                 return (
                     <div className='formField'>
                         <label>{lbl}</label>
-                        <input type="radio" defaultValue={defaultValue} />
+                        <input name={name} type="radio" defaultValue={defaultValue}
+                            onBlur={this.props.onChange}
+                        />
                     </div>
                 );
             default:
