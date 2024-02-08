@@ -1,7 +1,7 @@
 {
   "name": "react-pushpdf-or-print-components",
   "description": "React components to print or push generated PDFs from your app.",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "keywords": [
     "react",
     "component",
