@@ -7,6 +7,11 @@ import PushComponent from '../src/index'; // Import the missing PushComponent mo
 const App = () => {
   return (
     <div>
+      <div>
+        <p style={{fontSize:"1em"}}>
+          Main Content
+        </p>
+      </div>
       <PushComponent
         printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
@@ -35,10 +40,11 @@ const App = () => {
         onPdf={(pdf) => {
           pdf.save('test.pdf');
         }}
+        style={{fontSize:"15px"}}
       >
         <div>
           <h1>Sample Page</h1>
-          <p>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <p style={{fontSize:"1em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
         </div>
       </PushComponent>
     </div>

@@ -40,6 +40,7 @@ export interface IProps {
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
   onPdf?: (pdf: jsPDF) => void;
+  style?: React.CSSProperties;
 }
 
 export class PushPrintComponents extends React.Component<IProps, { showPreview: boolean }> {
@@ -66,18 +67,13 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
       </React.Fragment>
     );
 
-    const componentStyle = {
-      // width: '100vw', // Set width to 100% of the viewport width
-      // height: '100vh', // Set height to 100% of the viewport height
-    };
-
     return (
-      <div style={componentStyle} className='react-components-print'>
+      <div className='react-components-print'>
         {printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint }))}
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-        {this.state.showPreview && <Preview previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+        {this.state.showPreview && <Preview style={this.props.style} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
       </div>
     );
   }

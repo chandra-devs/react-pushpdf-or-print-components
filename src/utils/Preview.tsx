@@ -8,6 +8,7 @@ interface PreviewProps {
     closePreview: () => void;
     children?: JSX.Element | JSX.Element[] | string;
     previewOptions?: previewOptions;
+    style?: React.CSSProperties;
 }
 
 interface onChangeHandlers {
@@ -17,7 +18,7 @@ interface onChangeHandlers {
 }
 
 
-const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePreview, previewOptions }) => {
+const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePreview, previewOptions, style }) => {
     const [formFields, setFormFields] = useState<any[]>([]);
     const [pdfFile, setPdfFile] = useState(null);
     useEffect(() => {
@@ -86,7 +87,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
     };
 
     return (
-        <div className={`preview ${previewPosition}`}>
+        <div className={`preview ${previewPosition}`} style={style}>
             <div className='header'>
                 <div className='title'>
                     <h3>{previewOptions?.title ?? ''}</h3>
