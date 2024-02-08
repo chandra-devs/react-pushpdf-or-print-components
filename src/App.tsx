@@ -25,7 +25,7 @@ const App = () => {
             }
           ],
           description: 'The following content will be shared with the patient. Please fill in the required fields.',
-          // pdfFileName: '454687465.pdf',
+          pdfFileName: '454687465.pdf',
           submitButtonText: 'Share to Patient',
           cancelButtonText: 'Cancel',
           onSubmit: (data) => {
