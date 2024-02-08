@@ -2,7 +2,6 @@ import { useRef, useCallback } from "react";
 import html2canvas from "html2canvas";
 
 import Converter from "./converter";
-import Preview from "./Preview";
 import { Options, TargetElementFinder, UsePDFResult } from "./types";
 import { buildConvertOptions } from "./utils";
 import jsPDF from "jspdf";
@@ -32,7 +31,7 @@ export const usePDF = (usePDFoptions?: Options): UsePDFResult => {
 const generatePDF = async (
   targetRefOrFunction: TargetElementFinder,
   customOptions?: Options
-): Promise<InstanceType<typeof jsPDF>> => {
+): Promise<InstanceType<typeof jsPDF | any>> => {
   const options = buildConvertOptions(customOptions);
   const targetElement = getTargetElement(targetRefOrFunction);
   if (!targetElement) {
@@ -43,6 +42,8 @@ const generatePDF = async (
     useCORS: options.canvas.useCORS,
     logging: options.canvas.logging,
     scale: options.resolution,
+    windowHeight: targetElement.scrollHeight,
+    windowWidth: targetElement.scrollWidth,
     ...options.overrides?.canvas,
   });
   const converter = new Converter(canvas, options);
@@ -53,6 +54,13 @@ const generatePDF = async (
     case "open": {
       window.open(pdf.output("bloburl"), "_blank");
       return pdf;
+    }
+    case "buildAndCreateFile": {
+      const pdfOutput = pdf.output();
+      const filename = options.filename ?? `${new Date().getTime()}.pdf`;
+      const blob = new Blob([pdfOutput], {type: 'application/pdf'});
+      const file = new File([blob], filename, {type: 'application/pdf'});
+      return file;
     }
     case "save":
     default: {

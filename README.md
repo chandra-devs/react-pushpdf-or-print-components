@@ -32,7 +32,7 @@ function App() {
       generatePdfTrigger={<button>Generate PDF</button>}
       className="custom-print-class"
       onPdf={(pdf) => {
-        console.log('PDF generated', pdf);
+        
         // Further actions with the generated PDF
       }}
     >
