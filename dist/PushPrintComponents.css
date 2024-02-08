@@ -1,8 +1,8 @@
 /* PushPrintComponents.css */
 
-/* .react-components-print > button {
+.react-components-print > button {
     margin:2px
-}  */
+} 
 
 .preview {
     display: flex;
