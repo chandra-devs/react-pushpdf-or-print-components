@@ -5,6 +5,7 @@ interface PreviewProps {
     closePreview: () => void;
     children?: JSX.Element | JSX.Element[] | string;
     previewOptions?: previewOptions;
+    style?: React.CSSProperties;
 }
 declare const Preview: React.FC<PreviewProps>;
 export default Preview;

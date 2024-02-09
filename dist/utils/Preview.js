@@ -6,7 +6,7 @@ var index_1 = tslib_1.__importStar(require("./index"));
 var fields_1 = tslib_1.__importDefault(require("./fields"));
 var Preview = function (_a) {
     var _b, _c, _d, _e;
-    var previewPosition = _a.previewPosition, children = _a.children, closePreview = _a.closePreview, previewOptions = _a.previewOptions;
+    var previewPosition = _a.previewPosition, children = _a.children, closePreview = _a.closePreview, previewOptions = _a.previewOptions, style = _a.style;
     var _f = (0, react_1.useState)([]), formFields = _f[0], setFormFields = _f[1];
     var _g = (0, react_1.useState)(null), pdfFile = _g[0], setPdfFile = _g[1];
     (0, react_1.useEffect)(function () {
@@ -72,7 +72,7 @@ var Preview = function (_a) {
             }
         });
     }); };
-    return (react_1.default.createElement("div", { className: "preview ".concat(previewPosition) },
+    return (react_1.default.createElement("div", { className: "preview ".concat(previewPosition), style: style },
         react_1.default.createElement("div", { className: 'header' },
             react_1.default.createElement("div", { className: 'title' },
                 react_1.default.createElement("h3", null, (_b = previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.title) !== null && _b !== void 0 ? _b : '')),

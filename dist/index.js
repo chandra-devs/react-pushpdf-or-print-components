@@ -109,16 +109,12 @@ var PushPrintComponents = /** @class */ (function (_super) {
         var content = (React.createElement(React.Fragment, null,
             this.createStyle(),
             children));
-        var componentStyle = {
-        // width: '100vw', // Set width to 100% of the viewport width
-        // height: '100vh', // Set height to 100% of the viewport height
-        };
-        return (React.createElement("div", { style: componentStyle, className: 'react-components-print' },
+        return (React.createElement("div", { className: 'react-components-print' },
             printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint })),
             generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf })),
             showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview })),
             ReactDOM.createPortal(content, this.rootEl),
-            this.state.showPreview && React.createElement(Preview_1.default, { previewPosition: 'right', closePreview: this.closePreview, children: children, previewOptions: previewOptions })));
+            this.state.showPreview && React.createElement(Preview_1.default, { style: tslib_1.__assign(tslib_1.__assign({}, this.props.style), { width: (previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.width) || "50%" }), previewPosition: 'right', closePreview: this.closePreview, children: children, previewOptions: previewOptions })));
     };
     return PushPrintComponents;
 }(React.Component));

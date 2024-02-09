@@ -24,6 +24,7 @@ export interface previewOptions {
     cancelButtonText?: string;
     onSubmit?: (data: any) => void;
     onCancel?: () => void;
+    width?: string;
 }
 export interface IProps {
     printTrigger?: JSX.Element;
@@ -33,6 +34,7 @@ export interface IProps {
     children: JSX.Element | JSX.Element[] | string;
     className?: string;
     onPdf?: (pdf: jsPDF) => void;
+    style?: React.CSSProperties;
 }
 export declare class PushPrintComponents extends React.Component<IProps, {
     showPreview: boolean;

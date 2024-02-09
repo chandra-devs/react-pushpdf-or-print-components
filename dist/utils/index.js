@@ -36,7 +36,8 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                     console.error("Unable to get the target element.");
                     return [2 /*return*/, new jspdf_1.default()];
                 }
-                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, windowHeight: targetElement.scrollHeight, windowWidth: targetElement.scrollWidth }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+                console.log('targetElement:', targetElement);
+                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
             case 1:
                 canvas = _e.sent();
                 converter = new converter_1.default(canvas, options);
