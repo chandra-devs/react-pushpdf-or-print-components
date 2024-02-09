@@ -5,6 +5,7 @@ import generatePDF, { Resolution, Margin, Options } from "./utils/index";
 import Preview from "./utils/Preview";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
+import { ConversionOptions } from './utils/types'; 
 
 interface FormField {
   name: string;
@@ -33,6 +34,7 @@ export interface previewOptions {
   onCancel?: () => void;
   width?: string;
   left?: string;
+  mode?: ConversionOptions["method"];
 }
 export interface IProps {
   printTrigger?: JSX.Element;

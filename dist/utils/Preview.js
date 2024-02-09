@@ -29,11 +29,12 @@ var Preview = function (_a) {
     };
     var generatePdf = function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
         var options, EL, pdfBlob, error_1;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var _a;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     options = {
-                        method: "buildAndCreateFile",
+                        method: (_a = previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.mode) !== null && _a !== void 0 ? _a : "buildAndCreateFile",
                         filename: previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.pdfFileName,
                         resolution: index_1.Resolution.EXTREME,
                         page: {
@@ -55,16 +56,16 @@ var Preview = function (_a) {
                         }
                     };
                     EL = document.getElementById('previewScreen');
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, 4, 5]);
+                    _b.trys.push([1, 3, 4, 5]);
                     return [4 /*yield*/, (0, index_1.default)(function () { return EL; }, options)];
                 case 2:
-                    pdfBlob = _a.sent();
+                    pdfBlob = _b.sent();
                     setFile(pdfBlob);
                     return [3 /*break*/, 5];
                 case 3:
-                    error_1 = _a.sent();
+                    error_1 = _b.sent();
                     console.error('Error generating PDF:', error_1);
                     return [3 /*break*/, 5];
                 case 4: return [7 /*endfinally*/];

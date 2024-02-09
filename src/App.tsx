@@ -37,7 +37,8 @@ const App = () => {
             console.log('Submitted Data:', data);
           },
           width: '70%',
-          left: '15%'
+          left: '15%',
+          mode: 'open'
         }}
         onPdf={(pdf) => {
           pdf.save('test.pdf');

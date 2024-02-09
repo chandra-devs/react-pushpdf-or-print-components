@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './PushPrintComponents.css';
 import jsPDF from 'jspdf';
+import { ConversionOptions } from './utils/types';
 interface FormField {
     name: string;
     type: 'text' | 'number' | 'email' | 'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' | 'radio';
@@ -26,6 +27,7 @@ export interface previewOptions {
     onCancel?: () => void;
     width?: string;
     left?: string;
+    mode?: ConversionOptions["method"];
 }
 export interface IProps {
     printTrigger?: JSX.Element;

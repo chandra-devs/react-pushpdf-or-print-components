@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { previewOptions } from '../index';
 import generatePDF, { Resolution, Margin, Options } from "./index";
 import Field from './fields';
+import { ConversionOptions } from './types';
 
 interface PreviewProps {
     previewPosition: string;
@@ -9,6 +10,7 @@ interface PreviewProps {
     children?: JSX.Element | JSX.Element[] | string;
     previewOptions?: previewOptions;
     style?: React.CSSProperties;
+    mode?: ConversionOptions["method"];
 }
 
 interface onChangeHandlers {
@@ -49,7 +51,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
 
     const generatePdf = async () => {
         const options: Options = {
-            method: "buildAndCreateFile",
+            method: previewOptions?.mode ?? "buildAndCreateFile",
             filename: previewOptions?.pdfFileName,
             resolution: Resolution.EXTREME,
             page: {
