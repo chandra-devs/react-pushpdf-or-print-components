@@ -8,7 +8,7 @@ import jsPDF from 'jspdf';
 
 interface FormField {
   name: string;
-  type: 'text' | 'number' |'email' |'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' |  'radio'
+  type: 'text' | 'number' | 'email' | 'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' | 'radio'
   label: string;
   defaultValue?: string;
   rows?: number;
@@ -31,6 +31,7 @@ export interface previewOptions {
   cancelButtonText?: string;
   onSubmit?: (data: any) => void;
   onCancel?: () => void;
+  width?: string;
 }
 export interface IProps {
   printTrigger?: JSX.Element;
@@ -51,7 +52,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     super(props);
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
-    
+
     this.state = {
       showPreview: false
     };
@@ -73,7 +74,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-        {this.state.showPreview && <Preview style={this.props.style} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+        {this.state.showPreview && <Preview style={{...this.props.style, width:previewOptions?.width || "50%"}} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
       </div>
     );
   }
@@ -126,7 +127,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     try {
       const pdfBlob = await generatePDF(() => this.rootEl, options);
       if (typeof this.props.onPdf === 'function') {
-        
+
         this.props.onPdf(pdfBlob);
       }
       // disable element after generating pdf

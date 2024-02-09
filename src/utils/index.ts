@@ -38,12 +38,12 @@ const generatePDF = async (
     console.error("Unable to get the target element.");
     return new jsPDF();
   }
+  console.log('targetElement:', targetElement);
   const canvas = await html2canvas(targetElement, {
     useCORS: options.canvas.useCORS,
     logging: options.canvas.logging,
     scale: options.resolution,
-    windowHeight: targetElement.scrollHeight,
-    windowWidth: targetElement.scrollWidth,
+    height: targetElement.scrollHeight,
     ...options.overrides?.canvas,
   });
   const converter = new Converter(canvas, options);
