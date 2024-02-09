@@ -25,6 +25,7 @@ export interface previewOptions {
     onSubmit?: (data: any) => void;
     onCancel?: () => void;
     width?: string;
+    left?: string;
 }
 export interface IProps {
     printTrigger?: JSX.Element;

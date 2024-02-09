@@ -37,6 +37,7 @@ const App = () => {
             console.log('Submitted Data:', data);
           },
           width: '70%',
+          left: '15%'
         }}
         onPdf={(pdf) => {
           pdf.save('test.pdf');
@@ -46,75 +47,7 @@ const App = () => {
         <div>
           <h1>Sample Page</h1>
           <p style={{ fontSize: "1em" }}>This is a sample page to demonstrate the usage of the PushComponent</p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            SQLite plugin for Flutter. Supports iOS, Android and MacOS.
-
-            Support transactions and batches
-            Automatic version managment during open
-            Helpers for insert/query/update/delete queries
-            DB operation executed in a background thread on iOS and Android
-            Other platforms support:
-
-            Linux/Windows/DartVM support using sqflite_common_ffi
-            Experimental Web support using sqflite_common_ffi_web.
-            Usage example:
-
-            notepad_sqflite: Simple flutter notepad working on iOS/Android/Windows/linux/Mac
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?
-          </p>
-          <p>
-            SQLite plugin for Flutter. Supports iOS, Android and MacOS.
-
-            Support transactions and batches
-            Automatic version managment during open
-            Helpers for insert/query/update/delete queries
-            DB operation executed in a background thread on iOS and Android
-            Other platforms support:
-
-            Linux/Windows/DartVM support using sqflite_common_ffi
-            Experimental Web support using sqflite_common_ffi_web.
-            Usage example:
-
-            notepad_sqflite: Simple flutter notepad working on iOS/Android/Windows/linux/Mac
-          </p>
+          
         </div>
       </PushComponent>
     </div>

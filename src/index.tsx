@@ -32,6 +32,7 @@ export interface previewOptions {
   onSubmit?: (data: any) => void;
   onCancel?: () => void;
   width?: string;
+  left?: string;
 }
 export interface IProps {
   printTrigger?: JSX.Element;
@@ -74,7 +75,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-        {this.state.showPreview && <Preview style={{...this.props.style, width:previewOptions?.width || "50%"}} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+        {this.state.showPreview && <Preview style={{...this.props.style, width:previewOptions?.width || "50%", left: previewOptions?.left || "25%"}} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
       </div>
     );
   }

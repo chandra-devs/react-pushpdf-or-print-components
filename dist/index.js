@@ -114,7 +114,7 @@ var PushPrintComponents = /** @class */ (function (_super) {
             generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf })),
             showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview })),
             ReactDOM.createPortal(content, this.rootEl),
-            this.state.showPreview && React.createElement(Preview_1.default, { style: tslib_1.__assign(tslib_1.__assign({}, this.props.style), { width: (previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.width) || "50%" }), previewPosition: 'right', closePreview: this.closePreview, children: children, previewOptions: previewOptions })));
+            this.state.showPreview && React.createElement(Preview_1.default, { style: tslib_1.__assign(tslib_1.__assign({}, this.props.style), { width: (previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.width) || "50%", left: (previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.left) || "25%" }), previewPosition: 'right', closePreview: this.closePreview, children: children, previewOptions: previewOptions })));
     };
     return PushPrintComponents;
 }(React.Component));

@@ -30,27 +30,13 @@ var App = function () {
                     console.log('Submitted Data:', data);
                 },
                 width: '70%',
+                left: '15%'
             }, onPdf: function (pdf) {
                 pdf.save('test.pdf');
             }, style: { fontSize: "15px" } },
             react_1.default.createElement("div", null,
                 react_1.default.createElement("h1", null, "Sample Page"),
-                react_1.default.createElement("p", { style: { fontSize: "1em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "SQLite plugin for Flutter. Supports iOS, Android and MacOS. Support transactions and batches Automatic version managment during open Helpers for insert/query/update/delete queries DB operation executed in a background thread on iOS and Android Other platforms support: Linux/Windows/DartVM support using sqflite_common_ffi Experimental Web support using sqflite_common_ffi_web. Usage example: notepad_sqflite: Simple flutter notepad working on iOS/Android/Windows/linux/Mac"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit non iusto ipsam quidem officia sint quasi optio odit eaque nostrum excepturi illo voluptas, architecto asperiores incidunt eligendi, libero laudantium. Veritatis."),
-                react_1.default.createElement("p", null, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam at maiores asperiores optio accusamus molestias quod, reprehenderit cupiditate dicta facere natus cumque reiciendis assumenda sit animi illum dignissimos pariatur?"),
-                react_1.default.createElement("p", null, "SQLite plugin for Flutter. Supports iOS, Android and MacOS. Support transactions and batches Automatic version managment during open Helpers for insert/query/update/delete queries DB operation executed in a background thread on iOS and Android Other platforms support: Linux/Windows/DartVM support using sqflite_common_ffi Experimental Web support using sqflite_common_ffi_web. Usage example: notepad_sqflite: Simple flutter notepad working on iOS/Android/Windows/linux/Mac")))));
+                react_1.default.createElement("p", { style: { fontSize: "1em" } }, "This is a sample page to demonstrate the usage of the PushComponent")))));
 };
 exports.default = App;
 //# sourceMappingURL=App.js.map
