@@ -5,16 +5,23 @@ import PushComponent from '../src/index'; // Import the missing PushComponent mo
 
 
 const App = () => {
+
+
   return (
     <div>
+      <div>
+        <p style={{ fontSize: "1em" }}>
+          Main Content
+        </p>
+      </div>
       <PushComponent
         printTrigger={<Button>Print</Button>}
         generatePdfTrigger={<Button>Get PDF</Button>}
         showPreviewTrigger={<Button>Share</Button>}
         previewOptions={{
-          title: 'Share Sample Page', 
+          title: 'Share Sample Page',
           formFields: [
-            { name: 'title', label: 'Title', type: 'text', validation: { required: true }},
+            { name: 'title', label: 'Title', type: 'text', validation: { required: true } },
             { name: 'reportType', label: 'Report Type', type: 'select', defaultValue: 'Discharge Report, Doctor Notes', validation: { required: true } },
             {
               name: 'notes',
@@ -31,14 +38,19 @@ const App = () => {
           onSubmit: (data) => {
             console.log('Submitted Data:', data);
           },
+          width: '70%',
+          left: '15%',
+          // mode: 'open'
         }}
         onPdf={(pdf) => {
-          pdf.save('test.pdf');
+          console.log('PDF:', pdf);
         }}
+        style={{ fontSize: "15px" }}
       >
         <div>
           <h1>Sample Page</h1>
-          <p>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <p style={{ fontSize: "1em" }}>This is a sample page to demonstrate the usage of the PushComponent</p>
+
         </div>
       </PushComponent>
     </div>

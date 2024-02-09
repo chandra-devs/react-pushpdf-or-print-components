@@ -17,10 +17,10 @@ const getTargetElement = (
   return targetRefOrFunction?.current;
 };
 
-export const usePDF = (usePDFoptions?: Options): UsePDFResult => {
+export const usePDF = (usePDFoptions?: Options): UsePDFResult => {``
   const targetRef = useRef();
   const toPDF = useCallback(
-    (toPDFoptions?: Options): Promise<InstanceType<typeof jsPDF>> => {
+    (toPDFoptions?: Options): Promise<jsPDF | File | undefined> => {
       return generatePDF(targetRef, usePDFoptions ?? toPDFoptions);
     },
     [targetRef, usePDFoptions]
@@ -31,19 +31,19 @@ export const usePDF = (usePDFoptions?: Options): UsePDFResult => {
 const generatePDF = async (
   targetRefOrFunction: TargetElementFinder,
   customOptions?: Options
-): Promise<InstanceType<typeof jsPDF | any>> => {
+): Promise<jsPDF | File | undefined> => {
   const options = buildConvertOptions(customOptions);
   const targetElement = getTargetElement(targetRefOrFunction);
   if (!targetElement) {
     console.error("Unable to get the target element.");
     return new jsPDF();
   }
+  console.log('targetElement:', targetElement);
   const canvas = await html2canvas(targetElement, {
     useCORS: options.canvas.useCORS,
     logging: options.canvas.logging,
     scale: options.resolution,
-    windowHeight: targetElement.scrollHeight,
-    windowWidth: targetElement.scrollWidth,
+    height: targetElement.scrollHeight,
     ...options.overrides?.canvas,
   });
   const converter = new Converter(canvas, options);
@@ -56,10 +56,10 @@ const generatePDF = async (
       return pdf;
     }
     case "buildAndCreateFile": {
-      const pdfOutput = pdf.output();
+      const pdfOutput = pdf.output("blob");
       const filename = options.filename ?? `${new Date().getTime()}.pdf`;
-      const blob = new Blob([pdfOutput], {type: 'application/pdf'});
-      const file = new File([blob], filename, {type: 'application/pdf'});
+      // const blob = new Blob([pdfOutput], {type: 'application/pdf'});
+      const file = new File([pdfOutput], filename, {type: 'application/pdf'});
       return file;
     }
     case "save":

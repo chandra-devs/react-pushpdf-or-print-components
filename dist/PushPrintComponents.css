@@ -7,12 +7,11 @@
 .preview {
     display: flex;
     justify-content: flex-start;
-    align-self: center;
     align-items: center;
     flex-direction: column;
     position: absolute;
     background-color: beige;
-    min-width: 50%;
+    width: 50%;
     left: 10%;
     top: 10%;
     height: 800px;

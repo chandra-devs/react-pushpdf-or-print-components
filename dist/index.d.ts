@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './PushPrintComponents.css';
 import jsPDF from 'jspdf';
+import { ConversionOptions } from './utils/types';
 interface FormField {
     name: string;
     type: 'text' | 'number' | 'email' | 'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' | 'radio';
@@ -24,6 +25,9 @@ export interface previewOptions {
     cancelButtonText?: string;
     onSubmit?: (data: any) => void;
     onCancel?: () => void;
+    width?: string;
+    left?: string;
+    mode?: ConversionOptions["method"];
 }
 export interface IProps {
     printTrigger?: JSX.Element;
@@ -32,7 +36,8 @@ export interface IProps {
     previewOptions?: previewOptions;
     children: JSX.Element | JSX.Element[] | string;
     className?: string;
-    onPdf?: (pdf: jsPDF) => void;
+    onPdf?: (pdf: jsPDF | File | undefined) => void;
+    style?: React.CSSProperties;
 }
 export declare class PushPrintComponents extends React.Component<IProps, {
     showPreview: boolean;

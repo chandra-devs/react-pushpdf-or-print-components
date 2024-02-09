@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { previewOptions } from '../index';
 import generatePDF, { Resolution, Margin, Options } from "./index";
 import Field from './fields';
+import { ConversionOptions } from './types';
 
 interface PreviewProps {
     previewPosition: string;
     closePreview: () => void;
     children?: JSX.Element | JSX.Element[] | string;
     previewOptions?: previewOptions;
+    style?: React.CSSProperties;
+    mode?: ConversionOptions["method"];
 }
 
 interface onChangeHandlers {
@@ -17,7 +20,7 @@ interface onChangeHandlers {
 }
 
 
-const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePreview, previewOptions }) => {
+const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePreview, previewOptions, style }) => {
     const [formFields, setFormFields] = useState<any[]>([]);
     const [pdfFile, setPdfFile] = useState(null);
     useEffect(() => {
@@ -48,7 +51,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
 
     const generatePdf = async () => {
         const options: Options = {
-            method: "buildAndCreateFile",
+            method: previewOptions?.mode ?? "buildAndCreateFile",
             filename: previewOptions?.pdfFileName,
             resolution: Resolution.EXTREME,
             page: {
@@ -86,7 +89,7 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
     };
 
     return (
-        <div className={`preview ${previewPosition}`}>
+        <div className={`preview ${previewPosition}`} style={style}>
             <div className='header'>
                 <div className='title'>
                     <h3>{previewOptions?.title ?? ''}</h3>

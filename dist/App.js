@@ -7,6 +7,8 @@ var index_1 = tslib_1.__importDefault(require("../src/index")); // Import the mi
 // import PushComponent from '../dist/index'; // Import the missing PushComponent module
 var App = function () {
     return (react_1.default.createElement("div", null,
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("p", { style: { fontSize: "1em" } }, "Main Content")),
         react_1.default.createElement(index_1.default, { printTrigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Print"), generatePdfTrigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Get PDF"), showPreviewTrigger: react_1.default.createElement(react_bootstrap_1.Button, null, "Share"), previewOptions: {
                 title: 'Share Sample Page',
                 formFields: [
@@ -21,18 +23,21 @@ var App = function () {
                     }
                 ],
                 description: 'The following content will be shared with the patient. Please fill in the required fields.',
-                // pdfFileName: '454687465.pdf',
+                pdfFileName: '454687465.pdf',
                 submitButtonText: 'Share to Patient',
                 cancelButtonText: 'Cancel',
                 onSubmit: function (data) {
                     console.log('Submitted Data:', data);
                 },
+                width: '70%',
+                left: '15%',
+                // mode: 'open'
             }, onPdf: function (pdf) {
-                pdf.save('test.pdf');
-            } },
+                console.log('PDF:', pdf);
+            }, style: { fontSize: "15px" } },
             react_1.default.createElement("div", null,
                 react_1.default.createElement("h1", null, "Sample Page"),
-                react_1.default.createElement("p", null, "This is a sample page to demonstrate the usage of the PushComponent")))));
+                react_1.default.createElement("p", { style: { fontSize: "1em" } }, "This is a sample page to demonstrate the usage of the PushComponent")))));
 };
 exports.default = App;
 //# sourceMappingURL=App.js.map

@@ -6,7 +6,7 @@ var index_1 = tslib_1.__importStar(require("./index"));
 var fields_1 = tslib_1.__importDefault(require("./fields"));
 var Preview = function (_a) {
     var _b, _c, _d, _e;
-    var previewPosition = _a.previewPosition, children = _a.children, closePreview = _a.closePreview, previewOptions = _a.previewOptions;
+    var previewPosition = _a.previewPosition, children = _a.children, closePreview = _a.closePreview, previewOptions = _a.previewOptions, style = _a.style;
     var _f = (0, react_1.useState)([]), formFields = _f[0], setFormFields = _f[1];
     var _g = (0, react_1.useState)(null), pdfFile = _g[0], setPdfFile = _g[1];
     (0, react_1.useEffect)(function () {
@@ -29,11 +29,12 @@ var Preview = function (_a) {
     };
     var generatePdf = function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
         var options, EL, pdfBlob, error_1;
-        return tslib_1.__generator(this, function (_a) {
-            switch (_a.label) {
+        var _a;
+        return tslib_1.__generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     options = {
-                        method: "buildAndCreateFile",
+                        method: (_a = previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.mode) !== null && _a !== void 0 ? _a : "buildAndCreateFile",
                         filename: previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.pdfFileName,
                         resolution: index_1.Resolution.EXTREME,
                         page: {
@@ -55,16 +56,16 @@ var Preview = function (_a) {
                         }
                     };
                     EL = document.getElementById('previewScreen');
-                    _a.label = 1;
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, 4, 5]);
+                    _b.trys.push([1, 3, 4, 5]);
                     return [4 /*yield*/, (0, index_1.default)(function () { return EL; }, options)];
                 case 2:
-                    pdfBlob = _a.sent();
+                    pdfBlob = _b.sent();
                     setFile(pdfBlob);
                     return [3 /*break*/, 5];
                 case 3:
-                    error_1 = _a.sent();
+                    error_1 = _b.sent();
                     console.error('Error generating PDF:', error_1);
                     return [3 /*break*/, 5];
                 case 4: return [7 /*endfinally*/];
@@ -72,7 +73,7 @@ var Preview = function (_a) {
             }
         });
     }); };
-    return (react_1.default.createElement("div", { className: "preview ".concat(previewPosition) },
+    return (react_1.default.createElement("div", { className: "preview ".concat(previewPosition), style: style },
         react_1.default.createElement("div", { className: 'header' },
             react_1.default.createElement("div", { className: 'title' },
                 react_1.default.createElement("h3", null, (_b = previewOptions === null || previewOptions === void 0 ? void 0 : previewOptions.title) !== null && _b !== void 0 ? _b : '')),

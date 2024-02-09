@@ -17,6 +17,7 @@ var getTargetElement = function (targetRefOrFunction) {
     return targetRefOrFunction === null || targetRefOrFunction === void 0 ? void 0 : targetRefOrFunction.current;
 };
 var usePDF = function (usePDFoptions) {
+    "";
     var targetRef = (0, react_1.useRef)();
     var toPDF = (0, react_1.useCallback)(function (toPDFoptions) {
         return generatePDF(targetRef, usePDFoptions !== null && usePDFoptions !== void 0 ? usePDFoptions : toPDFoptions);
@@ -25,7 +26,7 @@ var usePDF = function (usePDFoptions) {
 };
 exports.usePDF = usePDF;
 var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-    var options, targetElement, canvas, converter, pdf, _a, pdfOutput, filename, blob, file, pdfFilename;
+    var options, targetElement, canvas, converter, pdf, _a, pdfOutput, filename, file, pdfFilename;
     var _b, _c, _d;
     return tslib_1.__generator(this, function (_e) {
         switch (_e.label) {
@@ -36,7 +37,8 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                     console.error("Unable to get the target element.");
                     return [2 /*return*/, new jspdf_1.default()];
                 }
-                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, windowHeight: targetElement.scrollHeight, windowWidth: targetElement.scrollWidth }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+                console.log('targetElement:', targetElement);
+                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
             case 1:
                 canvas = _e.sent();
                 converter = new converter_1.default(canvas, options);
@@ -58,10 +60,9 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                 _e.label = 4;
             case 4:
                 {
-                    pdfOutput = pdf.output();
+                    pdfOutput = pdf.output("blob");
                     filename = (_c = options.filename) !== null && _c !== void 0 ? _c : "".concat(new Date().getTime(), ".pdf");
-                    blob = new Blob([pdfOutput], { type: 'application/pdf' });
-                    file = new File([blob], filename, { type: 'application/pdf' });
+                    file = new File([pdfOutput], filename, { type: 'application/pdf' });
                     return [2 /*return*/, file];
                 }
                 _e.label = 5;

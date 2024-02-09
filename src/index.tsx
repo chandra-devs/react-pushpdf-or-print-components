@@ -5,10 +5,11 @@ import generatePDF, { Resolution, Margin, Options } from "./utils/index";
 import Preview from "./utils/Preview";
 import * as tslib from 'tslib';
 import jsPDF from 'jspdf';
+import { ConversionOptions } from './utils/types'; 
 
 interface FormField {
   name: string;
-  type: 'text' | 'number' |'email' |'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' |  'radio'
+  type: 'text' | 'number' | 'email' | 'tel' | 'date' | 'time' | 'datetime-local' | 'textarea' | 'select' | 'checkbox' | 'radio'
   label: string;
   defaultValue?: string;
   rows?: number;
@@ -31,6 +32,9 @@ export interface previewOptions {
   cancelButtonText?: string;
   onSubmit?: (data: any) => void;
   onCancel?: () => void;
+  width?: string;
+  left?: string;
+  mode?: ConversionOptions["method"];
 }
 export interface IProps {
   printTrigger?: JSX.Element;
@@ -39,7 +43,8 @@ export interface IProps {
   previewOptions?: previewOptions;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
-  onPdf?: (pdf: jsPDF) => void;
+  onPdf?: (pdf: jsPDF | File | undefined) => void;
+  style?: React.CSSProperties;
 }
 
 export class PushPrintComponents extends React.Component<IProps, { showPreview: boolean }> {
@@ -50,7 +55,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     super(props);
 
     this.rootEl = this.createDivElement(this.rootId, props.className);
-    
+
     this.state = {
       showPreview: false
     };
@@ -66,18 +71,13 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
       </React.Fragment>
     );
 
-    const componentStyle = {
-      width: '100vw', // Set width to 100% of the viewport width
-      height: '100vh', // Set height to 100% of the viewport height
-    };
-
     return (
-      <div style={componentStyle} className='react-components-print'>
+      <div className='react-components-print'>
         {printTrigger && React.cloneElement(printTrigger, tslib.__assign({}, printTrigger.props, { onClick: this.handlePrint }))}
         {generatePdfTrigger && React.cloneElement(generatePdfTrigger, tslib.__assign({}, generatePdfTrigger.props, { onClick: this.generatePdf }))}
         {showPreviewTrigger && React.cloneElement(showPreviewTrigger, tslib.__assign({}, showPreviewTrigger.props, { onClick: this.showPreview }))}
         {ReactDOM.createPortal(content, this.rootEl)}
-        {this.state.showPreview && <Preview previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
+        {this.state.showPreview && <Preview style={{...this.props.style, width:previewOptions?.width || "50%", left: previewOptions?.left || "25%"}} previewPosition='right' closePreview={this.closePreview} children={children} previewOptions={previewOptions} />}
       </div>
     );
   }
@@ -130,7 +130,7 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     try {
       const pdfBlob = await generatePDF(() => this.rootEl, options);
       if (typeof this.props.onPdf === 'function') {
-        
+
         this.props.onPdf(pdfBlob);
       }
       // disable element after generating pdf
