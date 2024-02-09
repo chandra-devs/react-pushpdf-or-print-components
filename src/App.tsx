@@ -5,6 +5,8 @@ import PushComponent from '../src/index'; // Import the missing PushComponent mo
 
 
 const App = () => {
+
+
   return (
     <div>
       <div>
@@ -38,17 +40,17 @@ const App = () => {
           },
           width: '70%',
           left: '15%',
-          mode: 'open'
+          // mode: 'open'
         }}
         onPdf={(pdf) => {
-          pdf.save('test.pdf');
+          console.log('PDF:', pdf);
         }}
         style={{ fontSize: "15px" }}
       >
         <div>
           <h1>Sample Page</h1>
           <p style={{ fontSize: "1em" }}>This is a sample page to demonstrate the usage of the PushComponent</p>
-          
+
         </div>
       </PushComponent>
     </div>

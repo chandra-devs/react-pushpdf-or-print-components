@@ -43,7 +43,7 @@ export interface IProps {
   previewOptions?: previewOptions;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
-  onPdf?: (pdf: jsPDF) => void;
+  onPdf?: (pdf: jsPDF | File | undefined) => void;
   style?: React.CSSProperties;
 }
 
