@@ -50,6 +50,8 @@ function App() {
     onCancel: () => {
       console.log('Preview Cancelled');
     }
+    width: '80%',
+    left: '10%'
   };
 
   return (
@@ -62,6 +64,7 @@ function App() {
       onPdf={(pdf) => {
         // Further actions with the generated PDF
       }}
+      style={{ fontSize: '16px' }}
     >
       <div>
         Content to be printed or saved as PDF.
@@ -105,6 +108,7 @@ React component called PushPrintComponents that provides functionality for print
 |**`previewOptions`**|object|An object containing the configuration for the share preview form, including title, form fields, and action triggers.
 |**`className`**|string|An optional class name to apply to the print container for custom styling.
 |**`onPdf`**|function|A callback function that receives the generated PDF object for additional processing.
+|**`style`**|object|An optional object containing custom styles to apply to the print container. (fontSize will act as main font size for the print container)
 
 
 ## previewOptions Configuration
@@ -122,6 +126,13 @@ The `previewOptions` configuration allows for detailed customization of the shar
 | **`cancelButtonText`** | string | Customize the text for the cancel button in the preview form.                |
 | **`onSubmit`**      | function | Define a custom function to handle the form submission.                      |
 | **`onCancel`**      | function | Define a custom function to handle the form cancellation.                    |
+
+# Other minimal configurations on previewOptions
+
+| Name              | Type     | Description                                                                 |
+|-------------------|----------|-----------------------------------------------------------------------------|
+| **`width`**    | string   | Set the width of the share preview window along with % symbol. example: 80%   |
+| **`left`**   | string   | Set the left position of the share preview window along with % symbol. example: 10% |
 
 
 ## formFields Configuration
