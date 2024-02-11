@@ -39,9 +39,14 @@ const generatePDF = async (
     return new jsPDF();
   }
   console.log('targetElement:', targetElement);
+  await new Promise((resolve) => {
+    targetElement.addEventListener('load', resolve); // Check for images, iframes, etc.
+    targetElement.style.overflow = "visible"; // Change overflow to visible
+    setTimeout(resolve, 2000); // A failsafe timeout 
+});
   const canvas = await html2canvas(targetElement, {
     useCORS: options.canvas.useCORS,
-    logging: options.canvas.logging,
+    // logging: options.canvas.logging,
     scale: options.resolution,
     height: targetElement.scrollHeight,
     ...options.overrides?.canvas,
@@ -53,6 +58,7 @@ const generatePDF = async (
       return pdf;
     case "open": {
       window.open(pdf.output("bloburl"), "_blank");
+      targetElement.style.overflow = "scroll"; // Change overflow to visible
       return pdf;
     }
     case "buildAndCreateFile": {
@@ -60,6 +66,7 @@ const generatePDF = async (
       const filename = options.filename ?? `${new Date().getTime()}.pdf`;
       // const blob = new Blob([pdfOutput], {type: 'application/pdf'});
       const file = new File([pdfOutput], filename, {type: 'application/pdf'});
+      targetElement.style.overflow = "scroll"; // Change overflow to visible
       return file;
     }
     case "save":
@@ -70,5 +77,6 @@ const generatePDF = async (
     }
   }
 };
+
 
 export default generatePDF;

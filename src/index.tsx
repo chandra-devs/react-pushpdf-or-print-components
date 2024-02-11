@@ -130,20 +130,14 @@ export class PushPrintComponents extends React.Component<IProps, { showPreview: 
     try {
       const pdfBlob = await generatePDF(() => this.rootEl, options);
       if (typeof this.props.onPdf === 'function') {
-
         this.props.onPdf(pdfBlob);
       }
       // disable element after generating pdf
-      this.rootEl.style.display = 'none';
     } catch (error) {
       console.error('Error generating PDF:', error);
       // disable element on error
-      this.rootEl.style.display = 'none';
     } finally {
-      // Remove the element from the DOM when done
-      document.body.removeChild(this.rootEl);
-      // disable element after removing from the DOM
-      this.rootEl.style.display = 'none';
+      this.rootEl.remove();
     }
   };
 

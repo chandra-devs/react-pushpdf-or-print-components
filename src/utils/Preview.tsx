@@ -103,25 +103,25 @@ const Preview: React.FC<PreviewProps> = ({ previewPosition, children, closePrevi
             </div>
 
             <div className='view'>
-                <div className="previewscreen" id="previewScreen">
-                    {children}
-                </div>
+                    <div className="previewscreen" id="previewScreen">
+                        {children}
+                    </div>
                 <div className="form"><Form previewOptions={previewOptions ?? {}} onChangeHandlers={{
                     handleChange: handleChange,
                     handleSelectionChange: handleSelectionChange,
                     handleTextAreaChange: handleTextAreaChange
-                }}/></div>
+                }} /></div>
             </div>
 
             <div className='actions'>
                 <button onClick={
                     () => {
                         if (previewOptions?.onSubmit) {
-                            previewOptions.onSubmit({fields: formFields, pdf: pdfFile});
+                            previewOptions.onSubmit({ fields: formFields, pdf: pdfFile });
                         }
                         closePreview();
                     }
-                
+
                 }>{previewOptions?.submitButtonText ?? 'Submit'}</button>
                 <button onClick={() => closePreview()}>{previewOptions?.cancelButtonText ?? 'Cancel'}</button>
             </div>

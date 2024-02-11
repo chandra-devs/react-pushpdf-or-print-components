@@ -64,20 +64,13 @@ var PushPrintComponents = /** @class */ (function (_super) {
                         if (typeof this.props.onPdf === 'function') {
                             this.props.onPdf(pdfBlob);
                         }
-                        // disable element after generating pdf
-                        this.rootEl.style.display = 'none';
                         return [3 /*break*/, 5];
                     case 3:
                         error_1 = _a.sent();
                         console.error('Error generating PDF:', error_1);
-                        // disable element on error
-                        this.rootEl.style.display = 'none';
                         return [3 /*break*/, 5];
                     case 4:
-                        // Remove the element from the DOM when done
-                        document.body.removeChild(this.rootEl);
-                        // disable element after removing from the DOM
-                        this.rootEl.style.display = 'none';
+                        this.rootEl.remove();
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }

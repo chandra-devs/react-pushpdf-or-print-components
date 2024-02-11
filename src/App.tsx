@@ -50,7 +50,6 @@ const App = () => {
         <div>
           <h1>Sample Page</h1>
           <p style={{ fontSize: "1em" }}>This is a sample page to demonstrate the usage of the PushComponent</p>
-
         </div>
       </PushComponent>
     </div>
