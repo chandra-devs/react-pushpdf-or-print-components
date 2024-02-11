@@ -38,38 +38,49 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                     return [2 /*return*/, new jspdf_1.default()];
                 }
                 console.log('targetElement:', targetElement);
-                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, logging: options.canvas.logging, scale: options.resolution, height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+                return [4 /*yield*/, new Promise(function (resolve) {
+                        targetElement.addEventListener('load', resolve); // Check for images, iframes, etc.
+                        targetElement.style.overflow = "visible"; // Change overflow to visible
+                        setTimeout(resolve, 2000); // A failsafe timeout 
+                    })];
             case 1:
+                _e.sent();
+                return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, 
+                        // logging: options.canvas.logging,
+                        scale: options.resolution, height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+            case 2:
                 canvas = _e.sent();
                 converter = new converter_1.default(canvas, options);
                 pdf = converter.convert();
                 _a = options.method;
                 switch (_a) {
-                    case "build": return [3 /*break*/, 2];
-                    case "open": return [3 /*break*/, 3];
-                    case "buildAndCreateFile": return [3 /*break*/, 4];
-                    case "save": return [3 /*break*/, 5];
+                    case "build": return [3 /*break*/, 3];
+                    case "open": return [3 /*break*/, 4];
+                    case "buildAndCreateFile": return [3 /*break*/, 5];
+                    case "save": return [3 /*break*/, 6];
                 }
-                return [3 /*break*/, 5];
-            case 2: return [2 /*return*/, pdf];
-            case 3:
+                return [3 /*break*/, 6];
+            case 3: return [2 /*return*/, pdf];
+            case 4:
                 {
                     window.open(pdf.output("bloburl"), "_blank");
+                    targetElement.style.overflow = "scroll"; // Change overflow to visible
                     return [2 /*return*/, pdf];
                 }
-                _e.label = 4;
-            case 4:
+                _e.label = 5;
+            case 5:
                 {
                     pdfOutput = pdf.output("blob");
                     filename = (_c = options.filename) !== null && _c !== void 0 ? _c : "".concat(new Date().getTime(), ".pdf");
                     file = new File([pdfOutput], filename, { type: 'application/pdf' });
+                    targetElement.style.overflow = "scroll"; // Change overflow to visible
                     return [2 /*return*/, file];
                 }
-                _e.label = 5;
-            case 5:
+                _e.label = 6;
+            case 6:
                 pdfFilename = (_d = options.filename) !== null && _d !== void 0 ? _d : "".concat(new Date().getTime(), ".pdf");
                 return [4 /*yield*/, pdf.save(pdfFilename, { returnPromise: true })];
-            case 6:
+            case 7:
                 _e.sent();
                 return [2 /*return*/, pdf];
         }
