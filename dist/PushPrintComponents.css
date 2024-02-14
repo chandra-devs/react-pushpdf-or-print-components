@@ -57,14 +57,19 @@
 .preview .view .previewscreen {
     background-color: white;
     display: flex;
-    width: 95%;
-    height: 700px;
+    max-width: 842px;
+    height: 800px;
     margin-left: 10px;
-    padding-left: 10px;
+    padding: 10px;
     box-sizing: border-box;
     position: relative;
-    overflow-y: scroll;
+    overflow: scroll;
 }
+
+p {
+    word-break: break-word;
+}
+
 
 .preview .view .form {
     display: flex;

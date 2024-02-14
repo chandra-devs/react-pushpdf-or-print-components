@@ -31,9 +31,9 @@ var App = function () {
                 },
                 width: '70%',
                 left: '15%',
-                // mode: 'open'
+                mode: 'open'
             }, onPdf: function (pdf) {
-                console.log('PDF:', pdf);
+                console.log('Generated PDF:', pdf);
             }, style: { fontSize: "15px" } },
             react_1.default.createElement("div", null,
                 react_1.default.createElement("h1", null, "Sample Page"),
