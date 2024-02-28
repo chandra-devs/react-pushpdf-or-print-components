@@ -124,7 +124,7 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                         y: top_1,
                         height: A4_HEIGHT,
                         width: A4_WIDTH,
-                        // useCORS: options.canvas.useCORS,
+                        useCORS: false,
                         // logging: options.canvas.logging,
                         allowTaint: true,
                         scale: 0.98,
