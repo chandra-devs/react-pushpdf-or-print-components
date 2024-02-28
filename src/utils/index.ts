@@ -127,7 +127,7 @@ const generatePDFFile = async (
           y: top,
           height: A4_HEIGHT,
           width: A4_WIDTH,
-          // useCORS: options.canvas.useCORS,
+          useCORS:false,
           // logging: options.canvas.logging,
           allowTaint: true,
           scale: 0.98,
