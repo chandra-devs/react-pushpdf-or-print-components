@@ -97,12 +97,12 @@ const generatePDFFile = async (
       return new jsPDF();
   }
 
-  waitForContentToLoad(targetElement);
+ await waitForContentToLoad(targetElement);
 
 // Set the canvas dimensions and scale
 const A4_HEIGHT = 595 * 2; // At scale 2
 const contentWidth = targetElement.scrollWidth; // Get the actual content width
-const scale = 2;
+const scale = 1;
 
   // Correctly segment the content
   const contentHeight = targetElement.scrollHeight;
@@ -132,23 +132,32 @@ const pdf = new jsPDF('p', 'px', [contentWidth, A4_HEIGHT]); // Use actual conte
   targetElement.style.overflow = 'hidden';
 
   for (let i = 0; i < pageCount; i++) {
+    const canvasHeight = Math.min(A4_HEIGHT, contentHeight - i * A4_HEIGHT);
     const top = i * A4_HEIGHT;
     const canvas = await html2canvas(targetElement, {
       y: top,
       x: 0,
-      height: A4_HEIGHT,
+      height: canvasHeight, // Adjust the height for the last page,
       width: contentWidth, // Use actual content width
       useCORS: true,
       allowTaint: true,
       scale: scale,
-      backgroundColor: "white",
+      onclone: (document) => {
+        // Clone the target element
+        const clone = document.getElementById(targetElement.id);
+        if (clone) {
+          clone.style.visibility = 'visible';
+          clone.style.overflow = 'visible';
+          clone.style.transform = 'none'; // Remove any CSS transformations
+        }
+      },
     });
 
     // Add the image to the PDF
     if (i > 0) {
       pdf.addPage();
     }
-    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, A4_HEIGHT);
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, Math.min(A4_HEIGHT, contentHeight - i * A4_HEIGHT));
 
       if (i < pageCount - 1) {
           targetElement.style.overflow = 'visible';
@@ -174,17 +183,33 @@ const pdf = new jsPDF('p', 'px', [contentWidth, A4_HEIGHT]); // Use actual conte
   }
 
 };
-function waitForContentToLoad(targetElement: HTMLElement) {
-  new Promise((resolve) => {
-    targetElement.addEventListener('load', resolve); 
-    targetElement.style.overflow = "visible"; 
-    setTimeout(resolve, 2000); 
-});
+function waitForContentToLoad(targetElement: HTMLElement): Promise<void> {
+  return new Promise((resolve) => {
+    const images = targetElement.querySelectorAll('img');
+    let loadedImages = 0;
+    images.forEach((img) => {
+      if (img.complete) {
+        loadedImages++;
+        if (loadedImages === images.length) resolve();
+      } else {
+        img.addEventListener('load', () => {
+          loadedImages++;
+          if (loadedImages === images.length) resolve();
+        });
+        img.addEventListener('error', () => { // Handle broken images
+          loadedImages++;
+          if (loadedImages === images.length) resolve();
+        });
+      }
+    });
 
-targetElement.style.backgroundColor = "white";
-console.log('targetElement:', targetElement);
-console.log('height:', targetElement.scrollHeight);
+    if (images.length === 0) { // No images, resolve immediately
+      resolve();
+    }
+
+    // Fallback in case images or other content never loads
+    setTimeout(resolve, 10000); // Adjust timeout as needed
+  });
 }
- 
 
 export default generatePDFFile;

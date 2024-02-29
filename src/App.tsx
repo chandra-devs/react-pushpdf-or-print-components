@@ -46,7 +46,17 @@ const App = () => {
         style={{fontSize: "15px"}}
       >
         <div>
-          <h1>Sample Page</h1>
+          <h1>Sample 1</h1>
+          <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <h1>Sample 2</h1>
+          <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <h1>Sample 3</h1>
+          <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <h1>Sample 4</h1>
+          <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <h1>Sample 5</h1>
+          <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
+          <h1>Sample 6</h1>
           <p style={{fontSize: "4em"}}>This is a sample page to demonstrate the usage of the PushComponent</p>
         </div>
       </PushComponent>
