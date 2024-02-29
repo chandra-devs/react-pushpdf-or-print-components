@@ -48,7 +48,7 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
                 console.log('height:', targetElement.scrollHeight);
                 return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, tslib_1.__assign({ useCORS: options.canvas.useCORS, 
                         // logging: options.canvas.logging,
-                        allowTaint: true, scale: 2, backgroundColor: "white", height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
+                        allowTaint: true, scale: 0.98, backgroundColor: "white", height: targetElement.scrollHeight }, (_b = options.overrides) === null || _b === void 0 ? void 0 : _b.canvas))];
             case 2:
                 canvas = _e.sent();
                 converter = new converter_1.default(canvas, options);
