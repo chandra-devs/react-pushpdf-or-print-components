@@ -88,7 +88,7 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
     });
 }); };
 var generatePDFFile = function (targetRefOrFunction, customOptions) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-    var options, targetElement, A4_HEIGHT, contentWidth, scale, contentHeight, pageCount, transform, pdf, i, top_1, canvas, pdfOutput, filename, file, pdfFilename;
+    var options, targetElement, A4_HEIGHT, contentWidth, scale, contentHeight, pageCount, transform, pdf, i, canvasHeight, top_1, canvas, pdfOutput, filename, file, pdfFilename;
     var _a, _b;
     return tslib_1.__generator(this, function (_c) {
         switch (_c.label) {
@@ -99,10 +99,12 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                     console.error("Unable to get the target element.");
                     return [2 /*return*/, new jspdf_1.default()];
                 }
-                waitForContentToLoad(targetElement);
+                return [4 /*yield*/, waitForContentToLoad(targetElement)];
+            case 1:
+                _c.sent();
                 A4_HEIGHT = 595 * 2;
                 contentWidth = targetElement.scrollWidth;
-                scale = 2;
+                scale = 1;
                 contentHeight = targetElement.scrollHeight;
                 pageCount = Math.ceil(contentHeight / A4_HEIGHT);
                 // Ensure visibility and overflow
@@ -117,7 +119,7 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                         targetElement.style.overflow = 'visible';
                         setTimeout(resolve, 2000);
                     })];
-            case 1:
+            case 2:
                 // Use a promise to wait for all content to load
                 _c.sent();
                 transform = window.getComputedStyle(targetElement).transform;
@@ -125,67 +127,96 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                 pdf = new jspdf_1.default('p', 'px', [contentWidth, A4_HEIGHT]);
                 targetElement.style.overflow = 'hidden';
                 i = 0;
-                _c.label = 2;
-            case 2:
-                if (!(i < pageCount)) return [3 /*break*/, 5];
+                _c.label = 3;
+            case 3:
+                if (!(i < pageCount)) return [3 /*break*/, 6];
+                canvasHeight = Math.min(A4_HEIGHT, contentHeight - i * A4_HEIGHT);
                 top_1 = i * A4_HEIGHT;
                 return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, {
                         y: top_1,
                         x: 0,
-                        height: A4_HEIGHT,
+                        height: canvasHeight, // Adjust the height for the last page,
                         width: contentWidth, // Use actual content width
                         useCORS: true,
                         allowTaint: true,
                         scale: scale,
-                        backgroundColor: "white",
+                        onclone: function (document) {
+                            // Clone the target element
+                            var clone = document.getElementById(targetElement.id);
+                            if (clone) {
+                                clone.style.visibility = 'visible';
+                                clone.style.overflow = 'visible';
+                                clone.style.transform = 'none'; // Remove any CSS transformations
+                            }
+                        },
                     })];
-            case 3:
+            case 4:
                 canvas = _c.sent();
                 // Add the image to the PDF
                 if (i > 0) {
                     pdf.addPage();
                 }
-                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, A4_HEIGHT);
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, Math.min(A4_HEIGHT, contentHeight - i * A4_HEIGHT));
                 if (i < pageCount - 1) {
                     targetElement.style.overflow = 'visible';
                 }
-                _c.label = 4;
-            case 4:
-                i++;
-                return [3 /*break*/, 2];
+                _c.label = 5;
             case 5:
-                if (!(options.method === "build")) return [3 /*break*/, 6];
-                return [2 /*return*/, pdf];
+                i++;
+                return [3 /*break*/, 3];
             case 6:
-                if (!(options.method === "open")) return [3 /*break*/, 7];
+                if (!(options.method === "build")) return [3 /*break*/, 7];
+                return [2 /*return*/, pdf];
+            case 7:
+                if (!(options.method === "open")) return [3 /*break*/, 8];
                 window.open(pdf.output("bloburl"), "_blank");
                 targetElement.style.overflow = "scroll";
                 return [2 /*return*/, pdf];
-            case 7:
-                if (!(options.method === "buildAndCreateFile")) return [3 /*break*/, 8];
+            case 8:
+                if (!(options.method === "buildAndCreateFile")) return [3 /*break*/, 9];
                 pdfOutput = pdf.output("blob");
                 filename = (_a = options.filename) !== null && _a !== void 0 ? _a : "".concat(new Date().getTime(), ".pdf");
                 file = new File([pdfOutput], filename, { type: 'application/pdf' });
                 targetElement.style.overflow = "scroll";
                 return [2 /*return*/, file];
-            case 8:
+            case 9:
                 pdfFilename = (_b = options.filename) !== null && _b !== void 0 ? _b : "".concat(new Date().getTime(), ".pdf");
                 return [4 /*yield*/, pdf.save(pdfFilename, { returnPromise: true })];
-            case 9:
+            case 10:
                 _c.sent();
                 return [2 /*return*/, pdf];
         }
     });
 }); };
 function waitForContentToLoad(targetElement) {
-    new Promise(function (resolve) {
-        targetElement.addEventListener('load', resolve);
-        targetElement.style.overflow = "visible";
-        setTimeout(resolve, 2000);
+    return new Promise(function (resolve) {
+        var images = targetElement.querySelectorAll('img');
+        var loadedImages = 0;
+        images.forEach(function (img) {
+            if (img.complete) {
+                loadedImages++;
+                if (loadedImages === images.length)
+                    resolve();
+            }
+            else {
+                img.addEventListener('load', function () {
+                    loadedImages++;
+                    if (loadedImages === images.length)
+                        resolve();
+                });
+                img.addEventListener('error', function () {
+                    loadedImages++;
+                    if (loadedImages === images.length)
+                        resolve();
+                });
+            }
+        });
+        if (images.length === 0) { // No images, resolve immediately
+            resolve();
+        }
+        // Fallback in case images or other content never loads
+        setTimeout(resolve, 10000); // Adjust timeout as needed
     });
-    targetElement.style.backgroundColor = "white";
-    console.log('targetElement:', targetElement);
-    console.log('height:', targetElement.scrollHeight);
 }
 exports.default = generatePDFFile;
 //# sourceMappingURL=index.js.map

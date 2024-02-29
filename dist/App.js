@@ -36,7 +36,17 @@ var App = function () {
                 console.log('Generated PDF:', pdf);
             }, style: { fontSize: "15px" } },
             react_1.default.createElement("div", null,
-                react_1.default.createElement("h1", null, "Sample Page"),
+                react_1.default.createElement("h1", null, "Sample 1"),
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
+                react_1.default.createElement("h1", null, "Sample 2"),
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
+                react_1.default.createElement("h1", null, "Sample 3"),
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
+                react_1.default.createElement("h1", null, "Sample 4"),
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
+                react_1.default.createElement("h1", null, "Sample 5"),
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent"),
+                react_1.default.createElement("h1", null, "Sample 6"),
                 react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent")))));
 };
 exports.default = App;
