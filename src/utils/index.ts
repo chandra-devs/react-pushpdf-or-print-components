@@ -52,7 +52,7 @@ const generatePDF = async (
     useCORS: options.canvas.useCORS,
     // logging: options.canvas.logging,
     allowTaint: true,
-    scale: 2,
+    scale: 0.98,
     backgroundColor: "white", // "transparent
     height: targetElement.scrollHeight,
     ...options.overrides?.canvas,
