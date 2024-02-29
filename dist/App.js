@@ -37,7 +37,7 @@ var App = function () {
             }, style: { fontSize: "15px" } },
             react_1.default.createElement("div", null,
                 react_1.default.createElement("h1", null, "Sample Page"),
-                react_1.default.createElement("p", { style: { fontSize: "1em" } }, "This is a sample page to demonstrate the usage of the PushComponent")))));
+                react_1.default.createElement("p", { style: { fontSize: "4em" } }, "This is a sample page to demonstrate the usage of the PushComponent")))));
 };
 exports.default = App;
 //# sourceMappingURL=App.js.map
