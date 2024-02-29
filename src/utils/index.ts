@@ -97,57 +97,58 @@ const generatePDFFile = async (
       return new jsPDF();
   }
 
-  await new Promise((resolve) => {
-      targetElement.addEventListener('load', resolve); 
-      targetElement.style.overflow = "visible"; 
-      setTimeout(resolve, 2000); 
-  });
+  waitForContentToLoad(targetElement);
 
-  targetElement.style.backgroundColor = "white";
-  console.log('targetElement:', targetElement);
-  console.log('height:', targetElement.scrollHeight);
+// Set the canvas dimensions and scale
+const A4_HEIGHT = 595 * 2; // At scale 2
+const contentWidth = targetElement.scrollWidth; // Get the actual content width
+const scale = 2;
 
-  // A4 Dimensions in pixels (consider the scale factor):
-  const A4_HEIGHT = 595 * 2; // At scale 2 
-  const A4_WIDTH = 842 * 2; // At scale 2
-
+  // Correctly segment the content
   const contentHeight = targetElement.scrollHeight;
   const pageCount = Math.ceil(contentHeight / A4_HEIGHT);
 
-  const pdf = new jsPDF('p', 'px', 'a4'); // Create jsPDF document in A4
-  targetElement.style.overflow = 'hidden'; 
+  // Ensure visibility and overflow
+  targetElement.style.visibility = 'visible';
+  targetElement.style.overflow = 'visible';
+
+  // Debugging with console logs
+  console.log('Content Height:', contentHeight);
+  console.log('Page Count:', pageCount);
+
+  // Use a promise to wait for all content to load
+  await new Promise((resolve) => {
+    targetElement.addEventListener('load', resolve);
+    targetElement.style.overflow = 'visible';
+    setTimeout(resolve, 2000);
+  });
+
+  // Check for CSS transformations
+  const transform = window.getComputedStyle(targetElement).transform;
+  console.log('Transform:', transform);
+
+  // Capture the canvas
+const pdf = new jsPDF('p', 'px', [contentWidth, A4_HEIGHT]); // Use actual content width
+  targetElement.style.overflow = 'hidden';
 
   for (let i = 0; i < pageCount; i++) {
-      const top = i * A4_HEIGHT;
-      // const height = Math.min(A4_HEIGHT, contentHeight - top); 
+    const top = i * A4_HEIGHT;
+    const canvas = await html2canvas(targetElement, {
+      y: top,
+      x: 0,
+      height: A4_HEIGHT,
+      width: contentWidth, // Use actual content width
+      useCORS: true,
+      allowTaint: true,
+      scale: scale,
+      backgroundColor: "white",
+    });
 
-      // targetElement.style.overflow = 'hidden';
-
-      const canvas = await html2canvas(targetElement, {
-          y: top,
-          height: A4_HEIGHT,
-          width: A4_WIDTH,
-          useCORS: true,
-          // logging: options.canvas.logging,
-          foreignObjectRendering: true,
-          scale: 0.98,
-          backgroundColor: "white", 
-          // ...options.overrides?.canvas,
-      });
-
-      // Logging for analysis
-      // console.log(`Page ${i+1}:`, top, height); 
-      
-        console.log('Canvas Preview:', canvas.toDataURL().substring(0, 50)); 
-
-        const imgData = canvas.toDataURL('image/png'); // or 'image/jpeg' 
-
-
-        if (i > 0) {
-          pdf.addPage();
-        }
-
-        pdf.addImage(imgData, 'PNG', 0, 0, A4_WIDTH, A4_HEIGHT);
+    // Add the image to the PDF
+    if (i > 0) {
+      pdf.addPage();
+    }
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, A4_HEIGHT);
 
       if (i < pageCount - 1) {
           targetElement.style.overflow = 'visible';
@@ -173,6 +174,17 @@ const generatePDFFile = async (
   }
 
 };
+function waitForContentToLoad(targetElement: HTMLElement) {
+  new Promise((resolve) => {
+    targetElement.addEventListener('load', resolve); 
+    targetElement.style.overflow = "visible"; 
+    setTimeout(resolve, 2000); 
+});
+
+targetElement.style.backgroundColor = "white";
+console.log('targetElement:', targetElement);
+console.log('height:', targetElement.scrollHeight);
+}
  
 
 export default generatePDFFile;

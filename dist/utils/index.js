@@ -88,7 +88,7 @@ var generatePDF = function (targetRefOrFunction, customOptions) { return tslib_1
     });
 }); };
 var generatePDFFile = function (targetRefOrFunction, customOptions) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
-    var options, targetElement, A4_HEIGHT, A4_WIDTH, contentHeight, pageCount, pdf, i, top_1, canvas, imgData, pdfOutput, filename, file, pdfFilename;
+    var options, targetElement, A4_HEIGHT, contentWidth, scale, contentHeight, pageCount, transform, pdf, i, top_1, canvas, pdfOutput, filename, file, pdfFilename;
     var _a, _b;
     return tslib_1.__generator(this, function (_c) {
         switch (_c.label) {
@@ -99,21 +99,30 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                     console.error("Unable to get the target element.");
                     return [2 /*return*/, new jspdf_1.default()];
                 }
+                waitForContentToLoad(targetElement);
+                A4_HEIGHT = 595 * 2;
+                contentWidth = targetElement.scrollWidth;
+                scale = 2;
+                contentHeight = targetElement.scrollHeight;
+                pageCount = Math.ceil(contentHeight / A4_HEIGHT);
+                // Ensure visibility and overflow
+                targetElement.style.visibility = 'visible';
+                targetElement.style.overflow = 'visible';
+                // Debugging with console logs
+                console.log('Content Height:', contentHeight);
+                console.log('Page Count:', pageCount);
+                // Use a promise to wait for all content to load
                 return [4 /*yield*/, new Promise(function (resolve) {
                         targetElement.addEventListener('load', resolve);
-                        targetElement.style.overflow = "visible";
+                        targetElement.style.overflow = 'visible';
                         setTimeout(resolve, 2000);
                     })];
             case 1:
+                // Use a promise to wait for all content to load
                 _c.sent();
-                targetElement.style.backgroundColor = "white";
-                console.log('targetElement:', targetElement);
-                console.log('height:', targetElement.scrollHeight);
-                A4_HEIGHT = 595 * 2;
-                A4_WIDTH = 842 * 2;
-                contentHeight = targetElement.scrollHeight;
-                pageCount = Math.ceil(contentHeight / A4_HEIGHT);
-                pdf = new jspdf_1.default('p', 'px', 'a4');
+                transform = window.getComputedStyle(targetElement).transform;
+                console.log('Transform:', transform);
+                pdf = new jspdf_1.default('p', 'px', [contentWidth, A4_HEIGHT]);
                 targetElement.style.overflow = 'hidden';
                 i = 0;
                 _c.label = 2;
@@ -122,25 +131,21 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
                 top_1 = i * A4_HEIGHT;
                 return [4 /*yield*/, (0, html2canvas_1.default)(targetElement, {
                         y: top_1,
+                        x: 0,
                         height: A4_HEIGHT,
-                        width: A4_WIDTH,
-                        useCORS: false,
-                        // logging: options.canvas.logging,
+                        width: contentWidth, // Use actual content width
+                        useCORS: true,
                         allowTaint: true,
-                        scale: 0.98,
+                        scale: scale,
                         backgroundColor: "white",
-                        // ...options.overrides?.canvas,
                     })];
             case 3:
                 canvas = _c.sent();
-                // Logging for analysis
-                // console.log(`Page ${i+1}:`, top, height); 
-                console.log('Canvas Preview:', canvas.toDataURL().substring(0, 50));
-                imgData = canvas.toDataURL('image/png');
+                // Add the image to the PDF
                 if (i > 0) {
                     pdf.addPage();
                 }
-                pdf.addImage(imgData, 'PNG', 0, 0, A4_WIDTH, A4_HEIGHT);
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, contentWidth, A4_HEIGHT);
                 if (i < pageCount - 1) {
                     targetElement.style.overflow = 'visible';
                 }
@@ -172,5 +177,15 @@ var generatePDFFile = function (targetRefOrFunction, customOptions) { return tsl
         }
     });
 }); };
+function waitForContentToLoad(targetElement) {
+    new Promise(function (resolve) {
+        targetElement.addEventListener('load', resolve);
+        targetElement.style.overflow = "visible";
+        setTimeout(resolve, 2000);
+    });
+    targetElement.style.backgroundColor = "white";
+    console.log('targetElement:', targetElement);
+    console.log('height:', targetElement.scrollHeight);
+}
 exports.default = generatePDFFile;
 //# sourceMappingURL=index.js.map
